@@ -3,6 +3,8 @@
 import { Button, Card, CardContent, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
+import Dashboard from './Dashboard';
+
 const cardStyle = {
   maxWidth: '400px',
   margin: 'auto',
@@ -55,7 +57,7 @@ const LoginPage = () => {
           value={password}
           onChange={handlePasswordChange}
         />
-        <Button variant="contained" color="primary" onClick={handleLogin}>
+        <Button variant="contained" color="primary" href="/dashboard">
           Login
         </Button>
       </CardContent>
