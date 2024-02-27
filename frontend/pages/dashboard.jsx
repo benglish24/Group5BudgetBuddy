@@ -1,11 +1,24 @@
 import { AppBar, Container, CssBaseline, Drawer, List, ListItem, ListItemIcon, ListItemText, Toolbar, Typography } from '@mui/material';
 
-import React from 'react';
+import React, {useContext} from 'react';
 import { useRouter } from 'next/router';
+
+
+import AuthContext from './context/AuthContext';
 
 const drawerWidth = 240;
 
 const Dashboard = ({ children, navigateToDashboard, navigateToAnalytics }) => {
+
+  const router = useRouter()
+  const {user, logoutUser, authTokens} = useContext(AuthContext)
+
+  // TODO: find better way of doing this. (maybe through a private route or w/e NextJS equivalent is)
+  // if user not logged in, redirect to login. 
+  if (!user) router.push("/LoginPage") 
+
+  console.log(user, authTokens)
+
   const rootStyle = {
     display: 'flex',
   };
@@ -32,9 +45,9 @@ const Dashboard = ({ children, navigateToDashboard, navigateToAnalytics }) => {
     padding: '20px',
   };
 
-  const navigateToLoginPage = () => {
-    router.push('/LoginPage'); // Replace 'loginpage' with the actual path of your login page
-  };
+  // const navigateToLoginPage = () => {
+  //   router.push('/LoginPage'); // Replace 'loginpage' with the actual path of your login page
+  // };
 
   return (
     <div style={rootStyle}>
@@ -63,8 +76,8 @@ const Dashboard = ({ children, navigateToDashboard, navigateToAnalytics }) => {
             <ListItem button onClick={navigateToAnalytics}>
               <ListItemText primary="Analytics" />
             </ListItem>
-            <ListItem button onClick={navigateToLoginPage}>
-              <ListItemText primary="Back to Login" />
+            <ListItem button onClick={logoutUser}>
+              <ListItemText primary="Logout" />
             </ListItem>
             {/* Add more menu items as needed */}
           </List>
@@ -73,6 +86,7 @@ const Dashboard = ({ children, navigateToDashboard, navigateToAnalytics }) => {
       <main style={contentStyle}>
         <Toolbar />
         <Container maxWidth="lg">
+        <h1>Hi, {user?.username}</h1>
           {children}
         </Container>
       </main>
