@@ -1,0 +1,121 @@
+{
+    "editor.fontSize": 15,
+    "editor.lineHeight": 22,
+    "editor.rulers": [
+        100
+    ],
+    "editor.wordWrapColumn": 100,
+    "files.trimTrailingWhitespace": true,
+    "workbench.preferredDarkColorTheme": "One Dark Pro Darker",
+    "editor.fontFamily": "Fira Code, JetBrains Mono, Menlo, Consolas, DejaVu Sans Mono, monospace",
+    "files.exclude": {
+        "out": true, // set this to true to hide the "out" folder with the compiled JS files
+        "**/*.pyc": true,
+        ".nyc_output": true,
+        "obj": true,
+        "bin": true,
+        "**/__pycache__": true,
+        ".vscode-test": false,
+        ".vscode test": false,
+        "**/.mypy_cache/**": true,
+        "**/.pytest_cache/**": true,
+        "**/.venv/**": true,
+        ".coverage": true,
+        "db.sqlite3": true,
+        "staticfiles": true,
+        "htmlcov": true,
+        "node_modules": true,
+        ".ruff_cache": true,
+    },
+    "search.exclude": {
+        "out": true, // set this to false to include "out" folder in search results
+        "dist": true,
+        "**/node_modules": true,
+        "coverage": true,
+        "languageServer*/**": true,
+        ".vscode-test": true,
+        ".vscode test": true
+    },
+    "git.allowForcePush": true,
+    "files.associations": {
+        "*.html": "html"
+    },
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.codeActionsOnSave": {
+            "source.organizeImports.ruff": "explicit",
+            "source.fixAll.ruff": "explicit"
+        },
+        "editor.formatOnSave": true,
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true,
+        "editor.formatOnType": true
+    },
+    "[html]": {
+        "editor.defaultFormatter": "monosans.djlint",
+        "editor.formatOnSave": true,
+    },
+    "[django-html]": {
+        "editor.defaultFormatter": "monosans.djlint",
+        "editor.formatOnSave": true,
+    },
+    "[markdown]": {
+        "editor.defaultFormatter": "yzhang.markdown-all-in-one",
+        "editor.formatOnSave": true,
+    },
+    "markdown.extension.preview.autoShowPreviewToSide": true,
+    "markdown.extension.print.theme": "dark",
+    "markdown.extension.toc.slugifyMode": "gitlab",
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit",
+            "source.fixAll": "explicit"
+        },
+        "editor.formatOnSave": true,
+    },
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+    },
+    "[yaml]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+    },
+    "[ignore]": {
+        "editor.defaultFormatter": "foxundermoon.shell-format"
+    },
+    "[dockerfile]": {
+        "editor.defaultFormatter": "ms-azuretools.vscode-docker",
+        "editor.quickSuggestions": {
+            "strings": true
+        }
+    },
+    "python.testing.promptToConfigure": true,
+    "javascript.preferences.quoteStyle": "single",
+    "prettier.printWidth": 100,
+    "prettier.singleQuote": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit"
+    },
+    "python.languageServer": "Pylance",
+    "python.analysis.completeFunctionParens": true,
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.autoSearchPaths": true,
+    "autoDocstring.docstringFormat": "numpy",
+    "autoDocstring.customTemplatePath": ".vscode/numpy.mustache",
+    "python.testing.pytestArgs": [
+        "."
+    ],
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "terminal.integrated.defaultProfile.windows": "Git Bash",
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "ruff.lint.args": [
+        "--line-length=100",
+    ],
+    "ruff.format.args": [
+        "--line-length=100",
+    ]
+}

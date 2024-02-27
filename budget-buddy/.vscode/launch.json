@@ -1,0 +1,81 @@
+{
+  "version": "1.0.0",
+  "configurations": [
+    {
+      "name": "Run Django Server",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/manage.py",
+      "args": [
+        "runserver"
+      ],
+      "django": true,
+      "justMyCode": true,
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}",
+        "DJANGO_SETTINGS_MODULE": "django_project.settings"
+      }
+    },
+    {
+      "name": "Collect Static Files",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/manage.py",
+      "args": [
+        "collectstatic",
+        "--no-input"
+      ],
+      "django": true,
+      "justMyCode": true,
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}",
+        "DJANGO_SETTINGS_MODULE": "django_project.settings"
+      }
+    },
+    {
+      "name": "Make Migrations",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/manage.py",
+      "args": [
+        "makemigrations"
+      ],
+      "django": true,
+      "justMyCode": true,
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}",
+        "DJANGO_SETTINGS_MODULE": "django_project.settings"
+      }
+    },
+    {
+      "name": "Apply Migrations",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/manage.py",
+      "args": [
+        "migrate"
+      ],
+      "django": true,
+      "justMyCode": true,
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}",
+        "DJANGO_SETTINGS_MODULE": "django_project.settings"
+      }
+    },
+    {
+      "name": "Create Super User",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/manage.py",
+      "args": [
+        "createsuperuser"
+      ],
+      "django": true,
+      "justMyCode": true,
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}",
+        "DJANGO_SETTINGS_MODULE": "django_project.settings"
+      }
+    },
+  ]
+}
