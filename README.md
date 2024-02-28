@@ -54,12 +54,13 @@ Instructions:
 5. In your commandline, you can use code . to open VSCode and will open the repo of the project
 6. If you instead wish to use command line, these are the commands you need to use:
 
-  -  python manage.py collectstatic      
-     - collects static files, run this if you are hitting errors or when first opening the project         
-  - shouldn't need to be use unless you create a new model, but its incase you hit errors just run  these 2 migration commands:
-    - python manage.py makemigrations
-    - python manage.py migrate   
+  python manage.py collectstatic      
+  - collects static files, run this if you are hitting errors or when first opening the project  
 
-  -  python manage.py runserver      
-     - This runs the server, should take you to the login page that is setup. 
-     - If you need, the link to the local server when running is: 127.0.0.1:8000/
+  shouldn't need to be use unless you create a new model, but its incase you hit errors just run  these 2 migration commands:
+  - python manage.py makemigrations
+  - python manage.py migrate   
+
+  python manage.py runserver      
+  - This runs the server, should take you to the login page that is setup. 
+  - If you need, the link to the local server when running is: 127.0.0.1:8000/
