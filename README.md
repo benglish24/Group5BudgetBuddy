@@ -43,15 +43,23 @@ Instructions:
 1. Install python(preferabbly the most recent version)
 2. Install git bash(this is my preferred method of using linux based commands on windows but you can use CMD for instance)
 3. Once installed, the project repo should have a virtual enviroment made, start the virtual enviroment based on these commands:
--   source venv/bin/activate       # Linux and Mac bash shell
--   source venv/Scripts/activate   # Windows bash shell
--   .\venv\Scripts\activate        # Windows CMD or powershell
+-   source venv/bin/activate             
+    - Linux and Mac bash shell
+-   source venv/Scripts/activate       
+    - Windows bash shell
+-   .\venv\Scripts\activate              
+    - Windows CMD or powershell
 
 4. I am not sure if VS code will be installed automatically, but it should be.
 5. In your commandline, you can use code . to open VSCode and will open the repo of the project
-6. If you instead wish to use command line, these are the commands you need to use
-    python manage.py collectstatic  #collects static files, run this if you are hitting errors or when first opening the project
-    python manage.py makemigrations 
-    python manage.py migrate        #shouldn't need to be use unless you create a new model, but its incase you hit errors just run these 2 migration commands
-    python manage.py runserver      #This runs the server, should take you to the login page that is setup. 
-        - If you need, the link to the local server when running is: 127.0.0.1:8000/
+6. If you instead wish to use command line, these are the commands you need to use:
+
+  -  python manage.py collectstatic      
+     - collects static files, run this if you are hitting errors or when first opening the project         
+  - shouldn't need to be use unless you create a new model, but its incase you hit errors just run  these 2 migration commands:
+    - python manage.py makemigrations
+    - python manage.py migrate   
+
+  -  python manage.py runserver      
+     - This runs the server, should take you to the login page that is setup. 
+     - If you need, the link to the local server when running is: 127.0.0.1:8000/
