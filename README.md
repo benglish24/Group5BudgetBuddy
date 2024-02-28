@@ -43,9 +43,9 @@ Instructions:
 1. Install python(preferabbly the most recent version)
 2. Install git bash(this is my preferred method of using linux based commands on windows but you can use CMD for instance)
 3. Once installed, the project repo should have a virtual enviroment made, start the virtual enviroment based on these commands:
-    source venv/bin/activate       # Linux and Mac bash shell
-    source venv/Scripts/activate   # Windows bash shell
-    .\venv\Scripts\activate        # Windows CMD or powershell
+-   source venv/bin/activate       # Linux and Mac bash shell
+-   source venv/Scripts/activate   # Windows bash shell
+-   .\venv\Scripts\activate        # Windows CMD or powershell
 
 4. I am not sure if VS code will be installed automatically, but it should be.
 5. In your commandline, you can use code . to open VSCode and will open the repo of the project
