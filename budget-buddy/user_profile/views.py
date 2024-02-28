@@ -7,17 +7,24 @@ from . import forms, mixins, models
 
 
 # Create your views here.
-class UserProfileDetailView(mixins.UserProfileRequiredMixin, generic.DetailView):
+class UserProfileDetailView(generic.DetailView):
     """Profile detail view."""
-
     model = models.UserProfile
     template_name = "user_profile/userprofile_detail.html"
     slug_field = None
     slug_url_kwarg = ""
 
     def get_object(self, queryset=None):
-        """Owner of the object should be the current user."""
-        return self.model.objects.filter(custom_user=self.request.user).first()
+        """Get the UserProfile object for the current user."""
+        user_profile, created = models.UserProfile.objects.get_or_create(custom_user=self.request.user)
+        return user_profile
+
+    def dispatch(self, request, *args, **kwargs):
+        """Check if the user has a UserProfile, if not, create one."""
+        user_profile = self.get_object()
+        if not user_profile:
+            return HttpResponseRedirect(reverse('user_profile:create_profile'))
+        return super().dispatch(request, *args, **kwargs)
 
 
 class UserProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
