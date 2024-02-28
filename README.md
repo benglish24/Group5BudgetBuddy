@@ -53,13 +53,13 @@ dealing with installing depenencies (not sure if this is 100% best practice
 since I had to use --force but it got the application running).
 
 To install frontend dependencies, make sure that you are in the frontend 
-directory, (cd /frontend/) then you can install dependencies through npm 
-in the terminal via command: npm install (I had to do npm install --force)
+directory, (`cd /frontend`) then you can install dependencies through npm 
+in the terminal via command: `npm install` (use `npm install --force` if facing issues).
 
 To install backend dependencies, have a terminal opened at the
 backend diretory (/backend/) or cd to the backend if you're using 
-just one terminal (cd ../backend), then install dependencies through 
-npm by command: `pip install -r requirements.txt`
+just one terminal (`cd ../backend`), then install dependencies through 
+pip using the command: `pip install -r requirements.txt`
 
 Once dependencies are installed, the frontend and backend can both be 
 started from their respectable directories with the following commands:
