@@ -10,7 +10,7 @@ much a user would like to spend in a week.
 - Lance Hargrave
 - Kevin Nguyen
 
-# RUNNING THE PROGRAM
+# Running the application 
 
 To get the application running on your machine, you might need to install
 depenencies on both the backend and the frontend. I will go back and 
