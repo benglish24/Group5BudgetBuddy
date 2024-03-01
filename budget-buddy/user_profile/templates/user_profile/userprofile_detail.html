@@ -1,0 +1,57 @@
+{% extends "base_generic.html" %}
+{% load django_bootstrap5 %}
+{% load static %}
+{% block title %}
+    User Profile
+{% endblock title %}
+{% block content %}
+    <div class="row align-items-md-stretch py-4">
+        <div class="col-md-5"></div>
+        <div class="col-md-2">
+            <div class="text-center">
+                {% if user.userprofile.picture %}
+                    <img src="{{ user.userprofile.picture.url }}"
+                         alt="Profile Picture"
+                         class="rounded-circle img-thumbnail"
+                         height="auto"
+                         width="auto">
+                {% else %}
+                    <img src="{% static 'img/user-icon.png' %}"
+                         alt="Profile Picture"
+                         class="rounded-circle img-thumbnail"
+                         height="auto"
+                         width="auto">
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-5"></div>
+    </div>
+    <div class="row align-items-md-stretch py-4">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <ul>
+                <li>First Name: {{ user.first_name }}</li>
+                <li>Last Name: {{ user.last_name }}</li>
+                <li>Age: {{ user.userprofile.age }}</li>
+                <li>Gender: {{ user.userprofile.get_gender_display }}</li>
+            </ul>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    <div class="row align-items-md-stretch">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <a class="btn btn-primary"
+               role="button"
+               href="{% url 'user_profile:profile_update' %}">
+                <i class="fa-solid fa-edit"></i> Update Profile
+            </a>
+            <a class="btn btn-warning"
+               role="button"
+               href="{% url 'password_change' %}">
+                <i class="fa-solid fa-user-cog"></i> Change password
+            </a>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+{% endblock content %}

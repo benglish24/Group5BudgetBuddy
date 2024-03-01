@@ -1,0 +1,160 @@
+[
+{
+  "model": "sessions.session",
+  "pk": "b7r8zsw8btgkm1la4xhdp41le0lpwnr6",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAURP-FtSHyBpfu_QZyLxekaiAp7cr477ZJF5rMas6ZebMI61LjOvIcJ2IXJtjpt0NIz9x2QA9o985Tb8s8Id8VftDBb53y63q4fwcVRt3WFnIq9ozBBTKggwyKfEpCOIGk0RJ6baTxLjtvjQXaUjQ6VZRMGjT7fAHtozgV:1pHWCA:Jf8vEDB_CBr7I3e2ckc7F_Y7CraLjONYsMewsCeU2Fg",
+    "expire_date": "2023-01-30T20:35:06.334Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "d05qfedgx8ye907n432875c1rbogg5aq",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFQGMu4dN9vIMNjpGogKe3K-O_apAvd3nPOfQlP21r81vPi5yQuYhCn3y1QfOS6g3Snemsytrouc5C7Ig_a5dRSfl4P9--gUC_fGq3LBgiAGOHsVDA2KqtzQAwOITEYZ8aROWp2ABqt1ZyyDqw0Kh7E-wPNbTdg:1pHW8B:1C429J0npcx0uZ47wWACYAuWgtjhxs2ZBVkehsxOEdw",
+    "expire_date": "2023-01-30T20:30:59.356Z"
+  }
+},
+{
+  "model": "users.customuser",
+  "fields": {
+    "password": "pbkdf2_sha256$390000$WOMwwnvjEWKzIAR796ccz4$wut3NZvSj8x3rrinn8viM6ffx4p74Z08dnj8iwUT80Y=",
+    "last_login": "2023-01-16T20:25:54.554Z",
+    "is_superuser": false,
+    "first_name": "teacher",
+    "last_name": "teacher",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-01-16T20:25:46.986Z",
+    "email": "teacher@teacher.com",
+    "is_student": false,
+    "is_teacher": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.customuser",
+  "fields": {
+    "password": "pbkdf2_sha256$390000$B2yO3FdzGVLMvN40rYtweh$2QRBMukJtmOHEoJU6p3WlJ8ml6PQ6RnpICVcgoT1wFQ=",
+    "last_login": "2023-01-16T20:30:59.350Z",
+    "is_superuser": false,
+    "first_name": "student",
+    "last_name": "student",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-01-16T20:27:57.907Z",
+    "email": "student@student.com",
+    "is_student": true,
+    "is_teacher": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "polls.question",
+  "pk": 1,
+  "fields": {
+    "question_text": "How many hours can you spend for CMPS 453 project per week?",
+    "pub_date": "2023-01-16T20:26:26.100Z"
+  }
+},
+{
+  "model": "polls.question",
+  "pk": 2,
+  "fields": {
+    "question_text": "What is Git?",
+    "pub_date": "2023-01-16T20:35:13.310Z"
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 1,
+  "fields": {
+    "question": 1,
+    "choice_text": "4 hours",
+    "votes": 0
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 2,
+  "fields": {
+    "question": 1,
+    "choice_text": "6 hours",
+    "votes": 1
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 3,
+  "fields": {
+    "question": 1,
+    "choice_text": "8 hours",
+    "votes": 0
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 4,
+  "fields": {
+    "question": 1,
+    "choice_text": "2 hours",
+    "votes": 0
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 5,
+  "fields": {
+    "question": 1,
+    "choice_text": "10 hours",
+    "votes": 1
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 6,
+  "fields": {
+    "question": 1,
+    "choice_text": "> 10 hours",
+    "votes": 0
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 7,
+  "fields": {
+    "question": 2,
+    "choice_text": "Version Control System",
+    "votes": 0
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 8,
+  "fields": {
+    "question": 2,
+    "choice_text": "Revision control system",
+    "votes": 0
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 9,
+  "fields": {
+    "question": 2,
+    "choice_text": "Operating system",
+    "votes": 0
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 10,
+  "fields": {
+    "question": 2,
+    "choice_text": "Mobile application",
+    "votes": 0
+  }
+}
+]

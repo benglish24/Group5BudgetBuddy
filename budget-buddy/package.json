@@ -1,0 +1,23 @@
+{
+    "name": "polls-app",
+    "version": "1.0.0",
+    "description": "Welcome to Polls app",
+    "main": "index.js",
+    "devDependencies": {
+        "cypress": "^11.2.0"
+    },
+    "scripts": {
+        "e2e": "cypress open"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@gitlab.com/453-spring-2021-team-graders/django-project-template"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://gitlab.com/453-spring-2021-team-graders/django-project-template"
+    },
+    "homepage": "https://gitlab.com/453-spring-2021-team-graders/django-project-template"
+}

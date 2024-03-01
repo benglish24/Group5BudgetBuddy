@@ -1,0 +1,26 @@
+Since its recommended due to a lot of installs from a requirement.txt file, its better to develop this project
+in a virtual enviroment. The way to do it is super easy.
+
+Here is a link for the visual info on how to do this:
+https://docs.google.com/presentation/d/1IeM7DCn6KfYXFCM6s_eN9Za1A3zlviLm/edit?usp=sharing&ouid=114585968962595015184&rtpof=true&sd=true
+
+Instructions:
+1. Install python(preferabbly the most recent version)
+2. Install git bash(this is my preferred method of using linux based commands on windows but you can use CMD for instance)
+3. Install the virtual enviroment: pip install virtualenv
+3.5. Once installed, cd into the file directory(budget-buddy in this case). The command is: virtualenv venv
+4. Once installed, the project repo should have a virtual enviroment made, start the virtual enviroment based on these commands:
+    source venv/bin/activate       # Linux and Mac bash shell
+    source venv/Scripts/activate   # Windows bash shell
+    .\venv\Scripts\activate        # Windows CMD or powershell
+
+5. Once inside of a NEW virtual enviroment. You must run this command: pip install -r requirements.txt
+    - This command will install all libraries that are used in the project such as Django and bootstrap
+6. I am not sure if VS code will be installed automatically, but it should be.
+7.5. In your commandline, you can use code . to open VSCode and will open the repo of the project
+8. If you instead wish to use command line, these are the commands you need to use
+    python manage.py collectstatic  #collects static files, run this if you are hitting errors or when first opening the project
+    python manage.py makemigrations
+    python manage.py migrate        #shouldnt need to be use unless you create a new model, but its incase you hit errors just run these 2 migration commands
+    python manage.py runserver      #This runs the server, should take you to the login page that is setup. 
+        - If you need, the link to the local server when running is: 127.0.0.1:8000/
