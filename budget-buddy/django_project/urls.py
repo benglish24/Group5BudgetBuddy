@@ -11,8 +11,8 @@ urlpatterns = [
     path("accounts/", include("users.urls")),
     path("accounts/", include("user_profile.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
+    path("dashboard/", include("user_dashboard.urls")),
     path("logout/", auth_views.LogoutView.as_view(), name='logout'),  # Add this line for logout
-    path("user-dash/", include("user_dashboard.urls")),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

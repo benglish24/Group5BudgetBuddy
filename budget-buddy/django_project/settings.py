@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     # local apps
     "users.apps.UsersConfig",
     "user_profile.apps.UserProfileConfig",
-    "user_dashboard.apps.UserDashboardConfig",
+    "user_dashboard",
 ]
 
 MIDDLEWARE = [

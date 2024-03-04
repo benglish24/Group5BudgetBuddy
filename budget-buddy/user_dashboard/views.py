@@ -1,18 +1,12 @@
-from django.shortcuts import render, redirect
-from .forms import FinancialDataForm
-from .models import FinancialData
+from django.shortcuts import render
+from .models import UserDashboard
+from .decorators import authenticated_user
 
-def user_dash_view(request):
-    # Assuming FinancialDataForm is your form class for modifying FinancialData
-    if request.method == 'POST':
-        form = FinancialDataForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('user_dash')  # Redirect back to the user dashboard
-    else:
-        form = FinancialDataForm()  # Instantiate an empty form
+@authenticated_user
+def user_dashboard(request):
+    # Get or create the UserDashboard object for the current user
+    user_dashboard, created = UserDashboard.objects.get_or_create(custom_user=request.user)
 
-    # You may also want to retrieve existing FinancialData object if it exists
-    financial_data = FinancialData.objects.first()  # Or use appropriate logic to retrieve the existing data
-    context = {'form': form, 'financial_data': financial_data}
-    return render(request, 'your_app/user_dash.html', context)
+    # If the object was just created, it means it's empty and you might want to set default values here
+
+    return render(request, 'user_dash.html', {'user_dashboard': user_dashboard})

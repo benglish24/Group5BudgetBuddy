@@ -1,0 +1,14 @@
+{% extends "base_generic.html" %}
+{% block title %}
+User Dashboard
+{% endblock title %}
+
+{% block content %}
+<h2>Your Details:</h2>
+<ul>
+    <li>Salary: {{ user_dashboard.salary }}</li>
+    <li>Saving Percentage: {{ user_dashboard.saving_percentage }}</li>
+    <li>Fixed Percentage: {{ user_dashboard.fixed_percentage }}</li>
+    <li>Spending: {{ user_dashboard.spending }}</li>
+</ul>
+{% endblock content %}

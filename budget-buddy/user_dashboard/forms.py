@@ -1,7 +1,7 @@
 from django import forms
-from .models import FinancialData
+from .models import UserDashboard
 
-class FinancialDataForm(forms.ModelForm):
+class UserDashboardForm(forms.ModelForm):
     class Meta:
-        model = FinancialData
-        fields = ['salary', 'saving_percentage', 'fixed_percentage']
+        model = UserDashboard
+        fields = ['salary', 'saving_percentage', 'fixed_percentage', 'spending']
