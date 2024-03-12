@@ -1,9 +1,11 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
+
 from .models import UserDashboard, Transaction
 from .decorators import authenticated_user
+from .forms import TransactionForm, UploadForm
 
-from .forms import TransactionForm
-from django.http import HttpResponse
+import csv
 
 @authenticated_user
 def user_dashboard(request):
@@ -27,8 +29,8 @@ def add_transaction(request):
             transaction.save()
             return redirect('/')
 
-    form = TransactionForm
-    context = {'form' : form }
+    form = TransactionForm()
+    context = {'form' : form, 'button_text' : 'Confirm'}
     return render(request, 'transaction_form.html', context)
 
 
@@ -46,7 +48,7 @@ def update_transaction(request, pk):
             form.save()
             return redirect('/')
 
-    context = {'form' : form }
+    context = {'form' : form, 'button_text' : 'Confirm'}
     return render(request, 'transaction_form.html', context)
 
 
@@ -61,5 +63,37 @@ def delete_transaction(request, pk):
         transaction.delete()
         return redirect('/')
 
-    context = {"transaction" : transaction}
+    context = {"object" : transaction}
     return render(request, 'delete.html', context)
+
+
+@authenticated_user
+def upload_transaction(request):
+    def decode_utf8(file):
+        if not file: return
+        for line in file:
+            yield line.decode('utf-8')
+
+    if request.method == 'POST':
+        form = UploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            transactions = [] if 'file' not in request.FILES else csv.reader(decode_utf8(request.FILES['file']))
+            next(transactions) # skip header
+
+            for line in transactions:
+                if not line[0]: continue
+
+                date_of = line[0]
+                amount = line[1]
+                category = line[2]
+
+                t = Transaction()
+                t.date_of, t.amount, t.category = date_of, amount, category
+                t.user = request.user
+                t.save()
+
+            return redirect('/')
+
+    form = UploadForm()
+    context = {"form" : form}
+    return render(request, 'upload.html', context)

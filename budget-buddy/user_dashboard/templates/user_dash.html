@@ -19,19 +19,18 @@ User Dashboard
     <table style="border-collapse: separate; border-spacing: 2em;">
         <tr>
             <th>Date of</th>
-            <th>Description</th>
             <th>Amount</th>
             <th>Category</th>
         </tr>
 
         <div>
             <a href="{% url 'add_transaction' %}">Add Transaction</a>
+            <a href="{% url 'upload_transaction' %}">Import Transactions</a>
         </div>
 
         {% for t in transactions %}
             <tr>
                 <td>{{t.date_of}}</td>
-                <td>{{t.description}}</td>
                 <td>${{t.amount}}</td>
                 <td>{{t.category}}</td>
                 <td><a href="{% url 'update_transaction' t.id %}">Edit</a></td>

@@ -8,4 +8,5 @@ urlpatterns = [
     path('add_transaction/', add_transaction, name='add_transaction'),
     path('update_transaction/<int:pk>', update_transaction, name='update_transaction'),
     path('delete_transaction/<int:pk>', delete_transaction, name='delete_transaction'),
+    path('upload_transaction/', upload_transaction, name='upload_transaction'),
 ]

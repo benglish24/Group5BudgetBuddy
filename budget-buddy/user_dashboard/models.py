@@ -14,7 +14,6 @@ class UserDashboard(models.Model):
 
 class Transaction(models.Model):
     user = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE)
-    description = models.CharField(max_length=200, default="")
     amount = models.DecimalField(decimal_places=2, max_digits=10, default=0)
     date_of = models.DateField()
     category = models.CharField(max_length=100, default="MISCELLANEOUS")
@@ -32,6 +31,6 @@ class Transaction(models.Model):
         ordering = ["-date_of"]
 
     def __str__(self):
-        return f"{self.date_of} | {self.user} | {self.amount}"
+        return f"{self.date_of} | {self.description} | {self.amount}"
 
 

@@ -1,19 +1,2 @@
-{% extends 'base_generic.html' %}
-
-{% block content %}
-    <form action="" method="POST">
-        {% csrf_token %}
-        <p>Are you sure you want to delete this transaction?</p>
-        <table style="border-collapse: separate; border-spacing: 2em;">
-            <tr>
-                <td>{{transaction.date_of}}</td>
-                <td>{{transaction.description}}</td>
-                <td>{{transaction.amount}}</td>
-                <td>{{transaction.category}}</td>
-            </tr>
-        </table>
-
-        <a href="{{request.META.HTTP_REFERER}}">Go back</a>
-        <input type="submit" value="Confirm">
-    </form>
-{% endblock content %}
+{% load django_bootstrap5 %}
+{% include 'generic_delete_confirm_form.html' %}
