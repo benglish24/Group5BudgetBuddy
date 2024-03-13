@@ -4,14 +4,25 @@ User Dashboard
 {% endblock title %}
 
 {% block content %}
-<h2>Your Details:</h2>
-<ul>
-    <li>Salary: {{ user_dashboard.salary }}</li>
-    <li>Saving Percentage: {{ user_dashboard.saving_percentage }}</li>
-    <li>Fixed Percentage: {{ user_dashboard.fixed_percentage }}</li>
-    <li>Spending: {{ user_dashboard.spending }}</li>
-</ul>
-
+<div class="card mt-4">
+    <div class="row">
+        <!-- Account summary -->
+        <div class="card col-md-6">
+            <h2>Account Overview:</h2>
+            <ul class="list-group">
+                <li class="list-group-item" style="font-size: 16px;">Salary: {{ user_dashboard.salary }}</li>
+                <li class="list-group-item" style="font-size: 16px;">Saving Percentage: {{ user_dashboard.saving_percentage }}</li>
+                <li class="list-group-item" style="font-size: 16px;">Fixed Percentage: {{ user_dashboard.fixed_percentage }}</li>
+                <li class="list-group-item" style="font-size: 16px;">Spending: {{ user_dashboard.spending }}</li>
+                
+            </ul>
+        </div>
+        <!-- Donut chart -->
+        <div class="col-md-6">
+            <h2>Expense Overview:</h2>
+            <canvas id="doughnutChart" width="250" height="250"></canvas>
+        </div>
+    </div>
 <hr>
 
 <div>
@@ -40,5 +51,22 @@ User Dashboard
 
     </table>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Chart.js Doughnut Chart
+    var ctx = document.getElementById('doughnutChart').getContext('2d');
+    var myDoughnutChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Entertainment', 'Shopping', 'Bills', 'Food'],
+            datasets: [{
+                data: [25, 35, 25, 15],
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+            }]
+        }
+    });
+</script>
 
 {% endblock content %}
