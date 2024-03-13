@@ -26,30 +26,38 @@ User Dashboard
 <hr>
 
 <div>
+    <!-- Transactions table -->
     <h2>Your Transactions</h2>
-    <table style="border-collapse: separate; border-spacing: 2em;">
-        <tr>
-            <th>Date of</th>
-            <th>Amount</th>
-            <th>Category</th>
-        </tr>
 
-        <div>
-            <a href="{% url 'add_transaction' %}">Add Transaction</a>
-            <a href="{% url 'upload_transaction' %}">Import Transactions</a>
-        </div>
-
-        {% for t in transactions %}
+    <div class="mb-3">
+        <a href="{% url 'add_transaction' %}" class="btn btn-primary">Add Transaction</a>
+        <a href="{% url 'upload_transaction' %}" class="btn btn-secondary">Import Transactions</a>
+    </div>
+    
+    <table class="table">
+        <thead>
             <tr>
-                <td>{{t.date_of}}</td>
-                <td>${{t.amount}}</td>
-                <td>{{t.category}}</td>
-                <td><a href="{% url 'update_transaction' t.id %}">Edit</a></td>
-                <td><a href="{% url 'delete_transaction' t.id %}">Delete</a></td>
+                <th scope="col">Date of</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Category</th>
+                <th scope="col">Actions</th>
             </tr>
-        {% endfor %}
-
+        </thead>
+        <tbody>
+            {% for t in transactions %}
+                <tr>
+                    <td>{{t.date_of}}</td>
+                    <td>${{t.amount}}</td>
+                    <td>{{t.category}}</td>
+                    <td>
+                        <a href="{% url 'update_transaction' t.id %}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{% url 'delete_transaction' t.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
+    
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -60,9 +68,13 @@ User Dashboard
     var myDoughnutChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
+            // placeholder labels, once the categories are finalized, in the add
+            // transaction screen it should be a dropdown of only these transaction types 
             labels: ['Entertainment', 'Shopping', 'Bills', 'Food'],
             datasets: [{
+                // dummy data values right now, needs to be updated 
                 data: [25, 35, 25, 15],
+                // more colors need to be added based on how many categories are decided on 
                 backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
             }]
         }
