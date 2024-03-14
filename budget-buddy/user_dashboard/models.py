@@ -31,6 +31,6 @@ class Transaction(models.Model):
         ordering = ["-date_of"]
 
     def __str__(self):
-        return f"{self.date_of} | {self.description} | {self.amount}"
+        return f"{self.date_of} | {self.amount}"
 
 
