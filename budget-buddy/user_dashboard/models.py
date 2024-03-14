@@ -9,23 +9,24 @@ class UserDashboard(models.Model):
     spending = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def __str__(self):
-        # return self.custom_user.username + f"'s Dashboard"
         return f"{self.custom_user.username}'s Dashboard"
+
+
+class Category(models.Model):
+    user = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE)
+    name = models.TextField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
 
 class Transaction(models.Model):
     user = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE)
     amount = models.DecimalField(decimal_places=2, max_digits=10, default=0)
     date_of = models.DateField()
-    category = models.CharField(max_length=100, default="MISCELLANEOUS")
 
-    # if limiting category choice to predefined:
-    # class Catgories(models.IntegerChoices):
-    #     GROCERIES = 0
-    #     ENTERTAINMENT = 1
-    #     UTILITIES = 2
-    #     MISCELLANEOUS = 3
-
-    # category = models.IntegerField(choices=Categories, default=Categories.MISCELLANEOUS)
+    # category = models.TextField(max_length=100)
+    category = models.ForeignKey("Category", on_delete=models.SET_DEFAULT, default="Other")
 
     class Meta:
         ordering = ["-date_of"]
@@ -33,4 +34,8 @@ class Transaction(models.Model):
     def __str__(self):
         return f"{self.date_of} | {self.amount}"
 
+    def get_amount(self):
+        return float(self.amount)
 
+    def get_category(self):
+        return str(self.category.name)

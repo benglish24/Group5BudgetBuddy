@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from user_dashboard.models import UserDashboard
+from user_dashboard.models import UserDashboard, Category
 
 from users.models import CustomUser
 
@@ -33,5 +33,7 @@ def create_profile(sender, instance, created, **kwargs):
         UserProfile.objects.create(custom_user=instance)
         UserDashboard.objects.create(custom_user=instance)
 
+        for c in ['Other', 'Groceries', 'Bills', 'Entertainment', 'Loans']:
+            Category.objects.create(user=instance, name=c)
 
 post_save.connect(create_profile, sender=CustomUser)
