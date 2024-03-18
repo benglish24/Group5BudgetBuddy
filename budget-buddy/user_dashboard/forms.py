@@ -7,6 +7,7 @@ class UserDashboardForm(ModelForm):
         model = UserDashboard
         fields = ['salary', 'saving_percentage', 'fixed_percentage', 'spending']
 
+
 class TransactionForm(ModelForm):
     def __init__(self, categories, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -20,6 +21,7 @@ class TransactionForm(ModelForm):
         widgets = {
             'date_of' : forms.widgets.DateInput(attrs={'type' : 'date'})
         }
+
 
 class UploadForm(forms.Form):
     csv_file = forms.FileField(

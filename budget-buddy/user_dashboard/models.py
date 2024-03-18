@@ -17,7 +17,7 @@ class Category(models.Model):
     name = models.TextField(max_length=100)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class Transaction(models.Model):
@@ -26,7 +26,7 @@ class Transaction(models.Model):
     date_of = models.DateField()
 
     # category = models.TextField(max_length=100)
-    category = models.ForeignKey("Category", on_delete=models.SET_DEFAULT, default="Other")
+    category = models.ForeignKey("Category", on_delete=models.SET_NULL, null=True)
 
     class Meta:
         ordering = ["-date_of"]

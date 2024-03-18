@@ -9,10 +9,10 @@
             <div class="card col-md-6">
                 <h2>Account Overview:</h2>
                 <ul class="list-group">
-                    <li class="list-group-item" style="font-size: 16px;">Salary: {{ user_dashboard.salary }}</li>
-                    <li class="list-group-item" style="font-size: 16px;">Saving Percentage: {{ user_dashboard.saving_percentage }}</li>
-                    <li class="list-group-item" style="font-size: 16px;">Fixed Percentage: {{ user_dashboard.fixed_percentage }}</li>
-                    <li class="list-group-item" style="font-size: 16px;">Spending: {{ user_dashboard.spending }}</li>
+                    <li class="list-group-item" style="font-size: 16px;">Salary: {{ dashboard.salary }}</li>
+                    <li class="list-group-item" style="font-size: 16px;">Saving Percentage: {{ dashboard.saving_percentage }}</li>
+                    <li class="list-group-item" style="font-size: 16px;">Fixed Percentage: {{ dashboard.fixed_percentage }}</li>
+                    <li class="list-group-item" style="font-size: 16px;">Spending: {{ dashboard.spending }}</li>
                 </ul>
                 <!-- user categories (probably not needed since the chart already lists the categories) -->
                 <hr>
@@ -66,31 +66,31 @@
         <div style="display: none" id="expenses" json-data="{{ expenses }}"></div>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
-    function loadData(selector) {
-        return JSON.parse(document.querySelector(selector).getAttribute('json-data'))
-    }
+            function loadData(selector) {
+                return JSON.parse(document.querySelector(selector).getAttribute('json-data'))
+            }
 
-    // Chart.js Doughnut Chart
-    var ctx = document.getElementById('doughnutChart').getContext('2d');
+            // Chart.js Doughnut Chart
+            var ctx = document.getElementById('doughnutChart').getContext('2d');
 
-    var expenses = loadData('#expenses')
+            var expenses = loadData('#expenses')
 
-    var labels = expenses.map((item) => item.category)
-    var data = expenses.map((item) => item.amount)
+            var labels = expenses.map((item) => item.category)
+            var data = expenses.map((item) => item.amount)
 
-    var myDoughnutChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            // placeholder labels, once the categories are finalized, in the add
-            // transaction screen it should be a dropdown of only these transaction types
-            labels: labels,
-            datasets: [{
-                // dummy data values right now, needs to be updated
-                data: data,
-                // more colors need to be added based on how many categories are decided on
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
-            }]
-        }
-    });
+            var myDoughnutChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    // placeholder labels, once the categories are finalized, in the add
+                    // transaction screen it should be a dropdown of only these transaction types
+                    labels: labels,
+                    datasets: [{
+                        // dummy data values right now, needs to be updated
+                        data: data,
+                        // more colors need to be added based on how many categories are decided on
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+                    }]
+                }
+            });
         </script>
     {% endblock content %}
