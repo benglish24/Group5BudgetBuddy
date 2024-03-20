@@ -2,7 +2,7 @@
 {% load humanize %}
 
 {% block title %}
-User Dashboard
+BudgetBuddy Dashboard
 {% endblock title %}
 
 {% block content %}
@@ -21,7 +21,7 @@ User Dashboard
               <li class="list-group-item text-light">Fixed Percentage: {{ dashboard.fixed_percentage }}%</li>
               <li class="list-group-item text-light">Available to Spend: ${{ dashboard.spending|floatformat:2|intcomma }}</li>
             </ul>
-            <a href="{% url 'update_information' %}" class="btn btn-warning btn-sm mt-4">Update Information</a>
+            <a href="{% url 'update_information' %}" class="btn btn-primary btn-lg mt-4">Update Information</a>
           </div>
         </div>
         
@@ -34,8 +34,8 @@ User Dashboard
               <li>{{ c }}</li>
               {% endfor %}
             </ul>
-            <a href="{% url 'add_category' %}" class="btn btn-warning btn-sm">Add Category</a>
-            <a href="{% url 'add_category' %}" class="btn btn-danger btn-sm">Remove Category</a>
+            <a href="{% url 'add_category' %}" class="btn btn-primary btn-lg">Add Category</a>
+            <a href="{% url 'add_category' %}" class="btn btn-danger btn-lg">Remove Category</a>
           </div>
         </div>
       </div>
@@ -96,23 +96,31 @@ User Dashboard
     return JSON.parse(document.querySelector(selector).getAttribute("json-data"));
   }
 
-  // Chart.js Doughnut Chart
-  var ctx = document.getElementById("doughnutChart").getContext("2d");
-  var expenses = loadData("#expenses");
-  var labels = expenses.map((item) => item.category);
-  var data = expenses.map((item) => item.amount);
+// Chart.js Doughnut Chart
+var ctx = document.getElementById("doughnutChart").getContext("2d");
+var expenses = loadData("#expenses");
+var labels = expenses.map((item) => item.category);
+var data = expenses.map((item) => item.amount);
 
-  var myDoughnutChart = new Chart(ctx, {
-    type: "doughnut",
-    data: {
-      labels: labels,
-      datasets: [
-        {
-          data: data,
-          backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"], // You can add more colors if needed
-        },
-      ],
-    },
-  });
+var myDoughnutChart = new Chart(ctx, {
+  type: "doughnut",
+  data: {
+    labels: labels,
+    datasets: [
+      {
+        data: data,
+        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"], // You can add more colors if needed
+      },
+    ],
+  },
+  options: {
+    legend: {
+      labels: {
+        fontColor: 'white' // Set legend label color to white
+      }
+    }
+  }
+});
+
 </script>
 {% endblock content %}
