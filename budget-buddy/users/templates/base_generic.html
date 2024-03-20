@@ -1,32 +1,61 @@
-{# Load the tag library #}
 {% load django_bootstrap5 %}
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="us-en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="description" content="Budget-Buddy" />
-        <meta name="keywords" content="HTML, CSS, JavaScript" />
-        <meta name="author" content="Team 5" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}" />
-        <title>Budget-Buddy</title>
-        {# Load CSS and JavaScript #}
-        {% bootstrap_css %}
-        {% bootstrap_javascript %}
-        {# Display django.contrib.messages as Bootstrap alerts #}
-        {% bootstrap_messages %}
-        <link rel="stylesheet" href="{% static 'css/base.css' %}" />
-        <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css" />
-        {% block style %}
-        <style>
-            body {
-                /* Background gradiant modifier */
-                background: linear-gradient(to bottom right, #14c1da, #e9d962);
-            }
-        </style>
-        {% endblock style %}
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Budget-Buddy">
+    <meta name="keywords" content="HTML, CSS, JavaScript">
+    <meta name="author" content="Team 5">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}">
+    <title>Budget-Buddy</title>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    {% bootstrap_messages %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    {% block style %}
+    <style>
+        body {
+            background-color: #22272B; /* Dark background color */
+            color: #fff; /* Light text color */
+        }
+        .card {
+            background-color: #333; /* Dark card background color */
+            color: #fff; /* Light text color */
+        }
+        .list-group-item {
+            background-color: #444; /* Dark list item background color */
+            border-color: #444; /* Dark list item border color */
+        }
+        .btn {
+            color: #fff !important; /* Light button text color */
+        }
+        .btn-primary {
+            background-color: #007bff; /* Primary button color */
+            border-color: #007bff; /* Primary button border color */
+        }
+        .btn-secondary {
+            background-color: #6c757d; /* Secondary button color */
+            border-color: #6c757d; /* Secondary button border color */
+        }
+        .btn-warning {
+            background-color: #ffc107; /* Warning button color */
+            border-color: #ffc107; /* Warning button border color */
+        }
+        .btn-danger {
+            background-color: #dc3545; /* Danger button color */
+            border-color: #dc3545; /* Danger button border color */
+        }
+
+        #main-container {
+            background-color: #282E33;
+        }
+    </style>
+    {% endblock style %}
+</head>
     <body>
         {% include "navbar.html" %}
         <div class="container">

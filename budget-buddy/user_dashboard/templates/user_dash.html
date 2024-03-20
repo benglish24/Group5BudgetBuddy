@@ -6,7 +6,7 @@ User Dashboard
 {% endblock title %}
 
 {% block content %}
-<div class="card mt-4">
+<div class="container mt-4">
   <div class="card-body">
     <div class="row">
       <!-- Left Column -->
@@ -16,10 +16,10 @@ User Dashboard
           <div class="card-body">
             <h2 class="card-title">Account Overview:</h2>
             <ul class="list-group">
-              <li class="list-group-item">Salary: ${{ dashboard.salary|floatformat:2|intcomma }}</li>
-              <li class="list-group-item">Saving Percentage: {{ dashboard.saving_percentage }}%</li>
-              <li class="list-group-item">Fixed Percentage: {{ dashboard.fixed_percentage }}%</li>
-              <li class="list-group-item">Available to Spend: ${{ dashboard.spending|floatformat:2|intcomma }}</li>
+              <li class="list-group-item text-light">Salary: ${{ dashboard.salary|floatformat:2|intcomma }}</li>
+              <li class="list-group-item text-light">Saving Percentage: {{ dashboard.saving_percentage }}%</li>
+              <li class="list-group-item text-light">Fixed Percentage: {{ dashboard.fixed_percentage }}%</li>
+              <li class="list-group-item text-light">Available to Spend: ${{ dashboard.spending|floatformat:2|intcomma }}</li>
             </ul>
             <a href="{% url 'update_information' %}" class="btn btn-warning btn-sm mt-4">Update Information</a>
           </div>
@@ -63,18 +63,18 @@ User Dashboard
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">Date of</th>
-              <th scope="col">Amount</th>
-              <th scope="col">Category</th>
-              <th scope="col">Actions</th>
+              <th scope="col" class="text-light">Date of</th>
+              <th scope="col" class="text-light">Amount</th>
+              <th scope="col" class="text-light">Category</th>
+              <th scope="col" class="text-light">Actions</th>
             </tr>
           </thead>
           <tbody>
             {% for t in transactions %}
             <tr>
-              <td>{{ t.date_of }}</td>
-              <td>${{ t.amount }}</td>
-              <td>{{ t.category }}</td>
+              <td class="text-light">{{ t.date_of }}</td>
+              <td class="text-light">${{ t.amount }}</td>
+              <td class="text-light">{{ t.category }}</td>
               <td>
                 <a href="{% url 'update_transaction' t.id %}" class="btn btn-warning btn-sm">Edit</a>
                 <a href="{% url 'delete_transaction' t.id %}" class="btn btn-danger btn-sm">Delete</a>
