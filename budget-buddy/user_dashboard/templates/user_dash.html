@@ -15,7 +15,7 @@
         <!-- Account Overview Card -->
         <div class="card mb-4">
           <div class="card-body">
-            <h2 class="card-title">Account Overview:</h2>
+            <h3 class="card-title">Account Overview:</h3>
             <ul class="list-group">
               <li class="list-group-item text-light">Salary: ${{ dashboard.salary|floatformat:2|intcomma }}</li>
               <li class="list-group-item text-light">Saving Percentage: {{ dashboard.saving_percentage }}%</li>
@@ -29,7 +29,7 @@
         <!-- Tracked Categories Card -->
         <div class="card mb-4">
           <div class="card-body">
-            <h2 class="card-title">Your Tracked Expense Categories</h2>
+            <h3 class="card-title">Your Tracked Expense Categories</h3>
             <ul class="list-group mb-4"  style="height: 200px; overflow-y: auto;">
               {% for c in categories %}
               <li class="list-group-item text-light">{{ c }}</li>
@@ -46,7 +46,7 @@
         <!-- Expense Overview Chart Card -->
         <div class="card mb-4">
           <div class="card-body">
-            <h2 class="card-title">Expense Overview:</h2>
+            <h3 class="card-title">Expense Overview:</h3>
             <canvas id="doughnutChart" width="250" height="250"></canvas>
           </div>
         </div>
