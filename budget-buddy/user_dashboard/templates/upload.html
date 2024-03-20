@@ -1,11 +1,25 @@
 {% extends 'base_generic.html' %}
 
-
 {% block content %}
     <h2>Upload transactions file</h2>
-    <form action="" method="POST" enctype="multipart/form-data">
+    <form id="upload-form" action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <input type="file" name="file">
+        <input type="file" id="file-input" name="file">
         <input type="submit" name="submit" value="Upload"">
+        <p id="warning-message" style="display: none; color: red;">Please select a file.</p>
     </form>
+
+    <!-- Script that prevents empty file upload from happening -->
+    <script>
+        // First, listen for the file to get uploaded
+        document.getElementById('upload-form').addEventListener('submit', function(event) {
+            var fileInput = document.getElementById('file-input'); // Check for file
+            var warningMessage = document.getElementById('warning-message'); //Grab warning message
+
+            if (fileInput.files.length === 0) { // If file is empty
+                event.preventDefault(); // Prevent form submission
+                warningMessage.style.display = 'block'; // Display warning message
+            }
+        });
+    </script>
 {% endblock content %}
