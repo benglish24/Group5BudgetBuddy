@@ -22,7 +22,7 @@
               <li class="list-group-item text-light">Fixed Percentage: {{ dashboard.fixed_percentage }}%</li>
               <li class="list-group-item text-light">Available to Spend: ${{ dashboard.spending|floatformat:2|intcomma }}</li>
             </ul>
-            <a href="{% url 'update_information' %}" class="btn btn-primary btn-lg mt-4">Update Information</a>
+            <a href="{% url 'update_information' %}" class="btn btn-primary btn-md mt-4">Update Information</a>
           </div>
         </div>
         
@@ -35,8 +35,8 @@
               <li class="list-group-item text-light">{{ c }}</li>
               {% endfor %}
             </ul>
-            <a href="{% url 'add_category' %}" class="btn btn-primary btn-lg">Add Category</a>
-            <a href="{% url 'add_category' %}" class="btn btn-danger btn-lg">Remove Category</a>
+            <a href="{% url 'add_category' %}" class="btn btn-primary btn-md">Add Category</a>
+            <a href="{% url 'add_category' %}" class="btn btn-danger btn-md">Remove Category</a>
           </div>
         </div>
       </div>
