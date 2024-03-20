@@ -5,6 +5,7 @@
 BudgetBuddy Dashboard
 {% endblock title %}
 
+
 {% block content %}
 <div class="container mt-4">
   <div class="card-body">
@@ -29,9 +30,9 @@ BudgetBuddy Dashboard
         <div class="card mb-4">
           <div class="card-body">
             <h2 class="card-title">Your Tracked Expense Categories</h2>
-            <ul>
+            <ul class="list-group mb-4">
               {% for c in categories %}
-              <li>{{ c }}</li>
+              <li class="list-group-item text-light">{{ c }}</li>
               {% endfor %}
             </ul>
             <a href="{% url 'add_category' %}" class="btn btn-primary btn-lg">Add Category</a>
