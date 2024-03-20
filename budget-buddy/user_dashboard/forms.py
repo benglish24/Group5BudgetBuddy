@@ -40,3 +40,4 @@ class SalaryForm(ModelForm):
     class Meta:
         model = UserDashboard
         fields = ['salary', 'saving_percentage']
+#ignore
