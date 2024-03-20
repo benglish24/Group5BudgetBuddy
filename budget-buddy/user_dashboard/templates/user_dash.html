@@ -1,102 +1,127 @@
 {% extends "base_generic.html" %}
-
 {% load humanize %}
 
 {% block title %}
-    User Dashboard
+<h1 class="title">BudgetBuddy Dashboard</h1>
 {% endblock title %}
+
+
 {% block content %}
-    <div class="card mt-4">
-        <div class="row">
-            <!-- Account summary -->
-            <div class="card col-md-6">
-                <h2>Account Overview:</h2>
-                <ul class="list-group">
-                    <li class="list-group-item" style="font-size: 16px;">Salary: ${{ dashboard.salary|floatformat:2|intcomma }}</li>
-                    <li class="list-group-item" style="font-size: 16px;">Saving Percentage: {{ dashboard.saving_percentage }}%</li>
-                    <li class="list-group-item" style="font-size: 16px;">Fixed Percentage: {{ dashboard.fixed_percentage }}%</li>
-                    <li class="list-group-item" style="font-size: 16px;">Available to Spend: ${{ dashboard.spending|floatformat:2|intcomma }}</li>
-                    
-                </ul>
-                <a href="{% url 'update_information' %}" class="btn btn-warning btn-sm mt-4">Update Information</a>
-                <!-- user categories (probably not needed since the chart already lists the categories) -->
-                <hr>
-                <h2>Your Tracked Expense Categories</h2>
-                <ul>
-                    {% for c in categories %}<li>{{ c }}</li>{% endfor %}
-                </ul>
-
-                <a href="{% url 'add_category' %}" class="btn btn-warning btn-sm">Add Category</a>
-            </div>
-            <!-- Donut chart -->
-            <div class="col-md-6">
-                <h2>Expense Overview:</h2>
-                <canvas id="doughnutChart" width="250" height="250"></canvas>
-            </div>
+<div class="container mt-4">
+  <div class="card-body">
+    <div class="row">
+      <!-- Left Column -->
+      <div class="col-md-6">
+        <!-- Account Overview Card -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <h3 class="card-title">Account Overview:</h3>
+            <ul class="list-group">
+              <li class="list-group-item text-light">Salary: ${{ dashboard.salary|floatformat:2|intcomma }}</li>
+              <li class="list-group-item text-light">Saving Percentage: {{ dashboard.saving_percentage }}%</li>
+              <li class="list-group-item text-light">Fixed Percentage: {{ dashboard.fixed_percentage }}%</li>
+              <li class="list-group-item text-light">Available to Spend: ${{ dashboard.spending|floatformat:2|intcomma }}</li>
+            </ul>
+            <a href="{% url 'update_information' %}" class="btn btn-primary btn-sm mt-4">Update Information</a>
+          </div>
         </div>
-        <hr>
-        <div>
-            <!-- Transactions table -->
-            <h2>Your Transactions</h2>
-            <div class="mb-3">
-                <a href="{% url 'add_transaction' %}" class="btn btn-primary">Add Transaction</a>
-                <a href="{% url 'upload_transaction' %}" class="btn btn-secondary">Import Transactions</a>
-            </div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Date of</th>
-                        <th scope="col">Amount</th>
-                        <th scope="col">Category</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for t in transactions %}
-                        <tr>
-                            <td>{{ t.date_of }}</td>
-                            <td>${{ t.amount }}</td>
-                            <td>{{ t.category }}</td>
-                            <td>
-                                <a href="{% url 'update_transaction' t.id %}"
-                                   class="btn btn-warning btn-sm">Edit</a>
-                                <a href="{% url 'delete_transaction' t.id %}"
-                                   class="btn btn-danger btn-sm">Delete</a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        
+        <!-- Tracked Categories Card -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <h3 class="card-title">Your Tracked Expense Categories</h3>
+            <ul class="list-group mb-4"  style="height: 195px; overflow-y: auto;">
+              {% for c in categories %}
+              <li class="list-group-item text-light">{{ c }}</li>
+              {% endfor %}
+            </ul>
+            <a href="{% url 'add_category' %}" class="btn btn-primary btn-md">Add Category</a>
+            <a href="{% url 'add_category' %}" class="btn btn-danger btn-md">Remove Category</a>
+          </div>
         </div>
-        <!-- weird hack to pass django data into js -->
-        <div style="display: none" id="expenses" json-data="{{ expenses }}"></div>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-            function loadData(selector) {
-                return JSON.parse(document.querySelector(selector).getAttribute('json-data'))
-            }
+      </div>
+      
+      <!-- Right Column -->
+      <div class="col-md-6">
+        <!-- Expense Overview Chart Card -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <h3 class="card-title">Expense Overview:</h3>
+            <canvas id="doughnutChart" width="250" height="250"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Transactions Card -->
+    <div class="card">
+      <div class="card-body">
+        <h2 class="card-title">Your Transactions</h2>
+        <div class="mb-3">
+          <a href="{% url 'add_transaction' %}" class="btn btn-primary">Add Transaction</a>
+          <a href="{% url 'upload_transaction' %}" class="btn btn-secondary">Import Transactions</a>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col" class="text-light">Date of</th>
+              <th scope="col" class="text-light">Amount</th>
+              <th scope="col" class="text-light">Category</th>
+              <th scope="col" class="text-light">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for t in transactions %}
+            <tr>
+              <td class="text-light">{{ t.date_of }}</td>
+              <td class="text-light">${{ t.amount }}</td>
+              <td class="text-light">{{ t.category }}</td>
+              <td>
+                <a href="{% url 'update_transaction' t.id %}" class="btn btn-warning btn-sm">Edit</a>
+                <a href="{% url 'delete_transaction' t.id %}" class="btn btn-danger btn-sm">Delete</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 
-            // Chart.js Doughnut Chart
-            var ctx = document.getElementById('doughnutChart').getContext('2d');
+<!-- JavaScript -->
+<div style="display: none" id="expenses" json-data="{{ expenses }}"></div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  function loadData(selector) {
+    return JSON.parse(document.querySelector(selector).getAttribute("json-data"));
+  }
 
-            var expenses = loadData('#expenses')
+// Chart.js Doughnut Chart
+var ctx = document.getElementById("doughnutChart").getContext("2d");
+var expenses = loadData("#expenses");
+var labels = expenses.map((item) => item.category);
+var data = expenses.map((item) => item.amount);
 
-            var labels = expenses.map((item) => item.category)
-            var data = expenses.map((item) => item.amount)
+var myDoughnutChart = new Chart(ctx, {
+  type: "doughnut",
+  data: {
+    labels: labels,
+    datasets: [
+      {
+        data: data,
+        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"], // You can add more colors if needed
+      },
+    ],
+  },
+  options: {
+    legend: {
+      labels: {
+        fontColor: 'white' // Set legend label color to white
+      }
+    }
+  }
+});
 
-            var myDoughnutChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    // placeholder labels, once the categories are finalized, in the add
-                    // transaction screen it should be a dropdown of only these transaction types
-                    labels: labels,
-                    datasets: [{
-                        // dummy data values right now, needs to be updated
-                        data: data,
-                        // more colors need to be added based on how many categories are decided on
-                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
-                    }]
-                }
-            });
-        </script>
-    {% endblock content %}
+</script>
+{% endblock content %}
