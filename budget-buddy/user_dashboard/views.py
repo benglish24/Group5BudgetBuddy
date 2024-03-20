@@ -153,7 +153,7 @@ def add_category(request):
     context = {'form' : form, 'button_text' : 'Confirm'}
     return render(request, 'category_form.html', context)
 
-def add_salary(request):
+def update_information(request):
     dashboard = UserDashboard.objects.get(custom_user=request.user)
     if request.method == 'POST':
         form = SalaryForm(request.POST, instance=dashboard)
@@ -164,6 +164,6 @@ def add_salary(request):
             return redirect('/')
     else:
         form = SalaryForm(instance=dashboard)
-    context = {'form': form, 'button_text': 'Update Salary'}
-    return render(request, 'salary_form.html', context)
+    context = {'form': form, 'button_text': 'Update Information'}
+    return render(request, 'update_information_form.html', context)
 

@@ -8,6 +8,19 @@ class UserDashboard(models.Model):
     fixed_percentage = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     spending = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
+    def calculate_budget(self):
+        # Perform budget calculation based on salary, saving percentage, etc.
+        if self.salary * (self.saving_percentage / 100) == 0:
+            return 0
+        budget = self.salary * (self.saving_percentage / 100)
+        # You can add more calculations based on your specific requirements
+        return budget
+
+    def save(self, *args, **kwargs):
+        # Calculate and update spending when saving UserDashboard instance
+        self.spending = self.calculate_budget()
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.custom_user.username}'s Dashboard"
 

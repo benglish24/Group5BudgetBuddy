@@ -14,14 +14,14 @@
                     <li class="list-group-item" style="font-size: 16px;">Fixed Percentage: {{ dashboard.fixed_percentage }}</li>
                     <li class="list-group-item" style="font-size: 16px;">Spending: {{ dashboard.spending }}</li>
                 </ul>
-                <a href="{% url 'add_salary' %}" class="btn btn-warning btn-sm mt-4">Add Salary</a>
+                <a href="{% url 'update_information' %}" class="btn btn-warning btn-sm mt-4">Update Information</a>
                 <!-- user categories (probably not needed since the chart already lists the categories) -->
                 <hr>
                 <h2>Your Tracked Expense Categories</h2>
                 <ul>
                     {% for c in categories %}<li>{{ c }}</li>{% endfor %}
                 </ul>
-                
+
                 <a href="{% url 'add_category' %}" class="btn btn-warning btn-sm">Add Category</a>
             </div>
             <!-- Donut chart -->
