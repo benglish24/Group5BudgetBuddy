@@ -21,6 +21,10 @@
       rel="stylesheet"
       type="text/css"
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+    />
     {% block style %}
     <style>
       body {
@@ -64,7 +68,18 @@
         padding: 10px;
       }
       .list-group-item:last-child {
+        font-family: "Roboto", sans-serif;
         border-bottom: none; /* Remove border from last item */
+      }
+      .title {
+        font-family: "Roboto", sans-serif;
+        text-align: center;
+      }
+      .li {
+        font-family: "Roboto", sans-serif;
+      }
+      .card-title {
+        font-family: "Roboto", sans-serif;
       }
     </style>
     {% endblock style %}
