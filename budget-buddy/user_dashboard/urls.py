@@ -10,4 +10,5 @@ urlpatterns = [
     path('delete_transaction/<int:pk>', delete_transaction, name='delete_transaction'),
     path('upload_transaction/', upload_transaction, name='upload_transaction'),
     path('add_category/', add_category, name='add_category'),
+    path('add_salary/', add_salary, name='add_salary')
 ]
