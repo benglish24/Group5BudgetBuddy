@@ -31,13 +31,13 @@
         <div class="card mb-2">
           <div class="card-body">
             <h4 class="card-title">Your Tracked Expense Categories</h4>
-            <ul class="list-group mb-2"  style="height: 201px; overflow-y: auto;">
+            <ul class="list-group mb-2"  style="height: 209px; overflow-y: auto;">
               {% for c in categories %}
               <li class="list-group-item text-light">{{ c }}</li>
               {% endfor %}
             </ul>
-            <a href="{% url 'add_category' %}" class="btn btn-primary btn-md">Add Category</a>
-            <a href="{% url 'add_category' %}" class="btn btn-danger btn-md">Remove Category</a>
+            <a href="{% url 'add_category' %}" class="btn btn-primary btn-sm">Add Category</a>
+            <a href="{% url 'add_category' %}" class="btn btn-danger btn-sm">Remove Category</a>
           </div>
         </div>
       </div>
