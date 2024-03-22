@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.db.models import Sum 
 
 from .models import UserDashboard, Transaction, Category
 from .decorators import authenticated_user
@@ -12,16 +13,18 @@ import json
 
 @authenticated_user
 def user_dashboard(request):
-    # Get or create the UserDashboard object for the current user
+    # Get or create the UserDashboard object for    the current user
 
     # user_dashboard, created = UserDashboard.objects.get_or_create(custom_user=request.user)
     # If the object was just created, it means it's empty and you might want to set default values here
-
     dashboard = UserDashboard.objects.get(custom_user=request.user)
     transactions = Transaction.objects.filter(user=request.user)
     categories = Category.objects.filter(user=request.user)
 
     dct = defaultdict(int)
+
+    # Calculate total transaction amount for current user 
+    total_amount = transactions.aggregate(total_amount=Sum('amount'))['total_amount'] or 0
 
     for t in transactions:
         dct[t.get_category()] += t.get_amount()
@@ -37,7 +40,9 @@ def user_dashboard(request):
     context = {'dashboard': dashboard,
                'transactions' : transactions,
                'categories' : categories,
-               'expenses' : expenses}
+               'expenses' : expenses,
+               'total_amount' : total_amount,
+               }
 
     return render(request, 'user_dash.html', context)
 
