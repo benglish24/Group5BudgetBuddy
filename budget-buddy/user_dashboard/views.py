@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 
 from .models import UserDashboard, Transaction, Category
 from .decorators import authenticated_user
-from .forms import TransactionForm, UploadForm, CategoryForm
+from .forms import TransactionForm, UploadForm, CategoryForm, SalaryForm
 
 from collections import defaultdict
 
@@ -152,3 +152,18 @@ def add_category(request):
     form = CategoryForm()
     context = {'form' : form, 'button_text' : 'Confirm'}
     return render(request, 'category_form.html', context)
+
+def update_information(request):
+    dashboard = UserDashboard.objects.get(custom_user=request.user)
+    if request.method == 'POST':
+        form = SalaryForm(request.POST, instance=dashboard)
+        if form.is_valid():
+            dashboard = form.save(commit=False)
+            dashboard.salary = form.cleaned_data['salary']  # Update salary value
+            dashboard.save()
+            return redirect('/')
+    else:
+        form = SalaryForm(instance=dashboard)
+    context = {'form': form, 'button_text': 'Update Information'}
+    return render(request, 'update_information_form.html', context)
+

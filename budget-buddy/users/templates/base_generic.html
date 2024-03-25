@@ -9,9 +9,7 @@
         <meta name="keywords" content="HTML, CSS, JavaScript" />
         <meta name="author" content="Team 5" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="shortcut icon"
-              type="image/png"
-              href="{% static 'img/favicon.ico' %}"/>
+        <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}" />
         <title>Budget-Buddy</title>
         {# Load CSS and JavaScript #}
         {% bootstrap_css %}
@@ -19,10 +17,14 @@
         {# Display django.contrib.messages as Bootstrap alerts #}
         {% bootstrap_messages %}
         <link rel="stylesheet" href="{% static 'css/base.css' %}" />
-        <link href="{% static 'fontawesomefree/css/all.min.css' %}"
-              rel="stylesheet"
-              type="text/css"/>
+        <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css" />
         {% block style %}
+        <style>
+            body {
+                /* Background gradiant modifier */
+                background: linear-gradient(to bottom right, #14c1da, #e9d962);
+            }
+        </style>
         {% endblock style %}
     </head>
     <body>

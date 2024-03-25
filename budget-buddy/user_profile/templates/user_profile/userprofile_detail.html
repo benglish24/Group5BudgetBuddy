@@ -5,53 +5,59 @@
     User Profile
 {% endblock title %}
 {% block content %}
-    <div class="row align-items-md-stretch py-4">
-        <div class="col-md-5"></div>
-        <div class="col-md-2">
-            <div class="text-center">
-                {% if user.userprofile.picture %}
-                    <img src="{{ user.userprofile.picture.url }}"
-                         alt="Profile Picture"
-                         class="rounded-circle img-thumbnail"
-                         height="auto"
-                         width="auto">
-                {% else %}
-                    <img src="{% static 'img/user-icon.png' %}"
-                         alt="Profile Picture"
-                         class="rounded-circle img-thumbnail"
-                         height="auto"
-                         width="auto">
-                {% endif %}
+    <style>
+        .profile-card {
+            background-color: white;
+            border: 1px solid rgba(0, 0, 0, 0.125);
+        }
+        .profile-details {
+            border-top: 1px solid rgba(0, 0, 0, 0.125);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        }
+    </style>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="card profile-card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">Profile Details</h5>
+                    </div>
+                    <div class="card-body profile-details">
+                        <div class="text-center mb-4">
+                            {% if user.userprofile.picture %}
+                                <img src="{{ user.userprofile.picture.url }}"
+                                     alt="Profile Picture"
+                                     class="rounded-circle img-thumbnail"
+                                     height="150"
+                                     width="150">
+                            {% else %}
+                                <img src="{% static 'img/user-icon.png' %}"
+                                     alt="Profile Picture"
+                                     class="rounded-circle img-thumbnail"
+                                     height="150"
+                                     width="150">
+                            {% endif %}
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item border-0 border-top">First Name: {{ user.first_name }}</li>
+                            <li class="list-group-item border-0">Last Name: {{ user.last_name }}</li>
+                            <li class="list-group-item border-0">Age: {{ user.userprofile.age }}</li>
+                            <li class="list-group-item border-0 border-bottom">Gender: {{ user.userprofile.get_gender_display }}</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer text-muted text-center">
+                        <a href="{% url 'user_profile:profile_update' %}" class="btn btn-primary">
+                            <i class="fas fa-edit me-1"></i> Update Profile
+                        </a>
+                        <a href="{% url 'password_change' %}" class="btn btn-warning">
+                            <i class="fas fa-user-cog me-1"></i> Change Password
+                        </a>
+                    </div>
+                </div>
             </div>
+            <div class="col-md-3"></div>
         </div>
-        <div class="col-md-5"></div>
-    </div>
-    <div class="row align-items-md-stretch py-4">
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
-            <ul>
-                <li>First Name: {{ user.first_name }}</li>
-                <li>Last Name: {{ user.last_name }}</li>
-                <li>Age: {{ user.userprofile.age }}</li>
-                <li>Gender: {{ user.userprofile.get_gender_display }}</li>
-            </ul>
-        </div>
-        <div class="col-md-4"></div>
-    </div>
-    <div class="row align-items-md-stretch">
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
-            <a class="btn btn-primary"
-               role="button"
-               href="{% url 'user_profile:profile_update' %}">
-                <i class="fa-solid fa-edit"></i> Update Profile
-            </a>
-            <a class="btn btn-warning"
-               role="button"
-               href="{% url 'password_change' %}">
-                <i class="fa-solid fa-user-cog"></i> Change password
-            </a>
-        </div>
-        <div class="col-md-4"></div>
     </div>
 {% endblock content %}

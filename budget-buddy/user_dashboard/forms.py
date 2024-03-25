@@ -35,3 +35,8 @@ class CategoryForm(ModelForm):
     class Meta:
         model = Category
         fields = ['name']
+
+class SalaryForm(ModelForm):
+    class Meta:
+        model = UserDashboard
+        fields = ['salary', 'saving_percentage']
