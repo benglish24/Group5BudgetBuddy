@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.db.models import Sum 
+from django.db.models import Sum
+from django.contrib import messages
 
 from .models import UserDashboard, Transaction, Category
 from .decorators import authenticated_user
@@ -23,7 +24,7 @@ def user_dashboard(request):
 
     dct = defaultdict(int)
 
-    # Calculate total transaction amount for current user 
+    # Calculate total transaction amount for current user
     total_amount = transactions.aggregate(total_amount=Sum('amount'))['total_amount'] or 0
 
     for t in transactions:
@@ -149,13 +150,21 @@ def add_category(request):
     if request.method == 'POST':
         form = CategoryForm(request.POST)
         if form.is_valid():
+            category_name = form.cleaned_data['name']
+            # Check if a category with the same name already exists
+            if Category.objects.filter(name=category_name, user=request.user).exists():
+                # If it exists, display a warning message
+                messages.warning(request, 'Category with this name already exists.')
+                return redirect('add_category')  # Redirect back to the add category page
+
+            # If the category doesn't exist, proceed to save it
             category = form.save(commit=False)
             category.user = request.user
             category.save()
             return redirect('/')
 
     form = CategoryForm()
-    context = {'form' : form, 'button_text' : 'Confirm'}
+    context = {'form': form, 'button_text': 'Confirm'}
     return render(request, 'category_form.html', context)
 
 def update_information(request):
