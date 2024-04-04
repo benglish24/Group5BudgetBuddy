@@ -1,1 +1,41 @@
-{% include 'generic_create_update_form.html' %}
+{% extends "base_generic.html" %}
+{% load django_bootstrap5 %}
+{% block title %}
+    Add Category
+{% endblock title %}
+{% block content %}
+    <!-- Form for adding a category -->
+    <div class="d-flex justify-content-center">
+        <div class="col-md-4">
+            <form method="post" id="categoryForm">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form.name.label_tag }}
+                    <!-- Textarea for category name with limited rows and maximum length -->
+                    <textarea class="form-control" name="name" id="id_name" rows="1" maxlength="255" placeholder="Enter category name..."></textarea>
+                </div>
+                {{ form.media }}
+                <!-- Submit button -->
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">{{ button_text }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Script to prevent new lines in the textarea -->
+    <script>
+        // Wait for the DOM content to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the textarea element
+            var textarea = document.getElementById('id_name');
+            // Add event listener for keydown event
+            textarea.addEventListener('keydown', function(event) {
+                // Check if the pressed key is the enter key
+                if (event.keyCode === 13) {
+                    // Prevent default behavior (creating new line)
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+{% endblock content %}
