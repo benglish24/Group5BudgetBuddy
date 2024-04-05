@@ -1,11 +1,11 @@
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Sum
 from django.contrib import messages
 
 from .models import UserDashboard, Transaction, Category
 from .decorators import authenticated_user
-from .forms import TransactionForm, UploadForm, CategoryForm, SalaryForm
+from .forms import TransactionForm, UploadForm, CategoryForm, SalaryForm, CategoryReplacementForm
 
 from collections import defaultdict
 
@@ -145,7 +145,7 @@ def upload_transaction(request):
     context = {"form" : form}
     return render(request, 'upload.html', context)
 
-
+@authenticated_user
 def add_category(request):
     if request.method == 'POST':
         form = CategoryForm(request.POST)
@@ -167,6 +167,26 @@ def add_category(request):
     context = {'form': form, 'button_text': 'Confirm'}
     return render(request, 'category_form.html', context)
 
+@authenticated_user
+def delete_category(request, category_id):
+    category = Category.objects.get(id=category_id)
+    transactions_with_category = Transaction.objects.filter(category=category)
+
+    if request.method == 'POST':
+        form = CategoryReplacementForm(request.POST, current_category=category)
+        if form.is_valid():
+            replacement_category = form.cleaned_data['replacement_category']
+            # Replace transactions with the selected replacement category
+            Transaction.objects.filter(category=category).update(category=replacement_category)
+            # Delete the category
+            category.delete()
+            return redirect('user_dash')
+    else:
+        form = CategoryReplacementForm(current_category=category)
+
+    return render(request, 'cannot_delete_category.html', {'category': category, 'form': form, 'transactions': transactions_with_category})
+
+@authenticated_user
 def update_information(request):
     dashboard = UserDashboard.objects.get(custom_user=request.user)
     if request.method == 'POST':
