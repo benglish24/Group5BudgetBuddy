@@ -17,4 +17,12 @@
         <button type="submit" class="btn btn-primary">Replace Transactions</button>
         <a href="{% url 'user_dash' %}" class="btn btn-secondary">Cancel</a>
     </form>
+
+    <hr> <!-- Add a horizontal rule to visually separate the two forms -->
+
+    <p>Alternatively, you can delete the category and its associated transactions:</p>
+    <form action="{% url 'delete_transactions' category.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete Transactions</button>
+    </form>
 {% endblock content %}

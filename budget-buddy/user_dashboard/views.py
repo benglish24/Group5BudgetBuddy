@@ -187,6 +187,22 @@ def delete_category(request, category_id):
     return render(request, 'cannot_delete_category.html', {'category': category, 'form': form, 'transactions': transactions_with_category})
 
 @authenticated_user
+def delete_transactions(request, category_id):
+    category = Category.objects.get(id=category_id)
+    transactions_with_category = Transaction.objects.filter(category=category)
+
+    if request.method == 'POST':
+        # Delete transactions associated with the category
+        transactions_with_category.delete()
+
+        # Delete the category
+        category.delete()
+
+        return redirect('user_dash')
+
+    return render(request, 'delete_transactions.html', {'category': category, 'transactions': transactions_with_category})
+
+@authenticated_user
 def update_information(request):
     dashboard = UserDashboard.objects.get(custom_user=request.user)
     if request.method == 'POST':
