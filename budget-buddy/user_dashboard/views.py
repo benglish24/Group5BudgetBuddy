@@ -172,19 +172,24 @@ def delete_category(request, category_id):
     category = Category.objects.get(id=category_id)
     transactions_with_category = Transaction.objects.filter(category=category)
 
-    if request.method == 'POST':
-        form = CategoryReplacementForm(request.POST, current_category=category)
-        if form.is_valid():
-            replacement_category = form.cleaned_data['replacement_category']
-            # Replace transactions with the selected replacement category
-            Transaction.objects.filter(category=category).update(category=replacement_category)
-            # Delete the category
-            category.delete()
-            return redirect('user_dash')
-    else:
-        form = CategoryReplacementForm(current_category=category)
+    if transactions_with_category.exists():
+        if request.method == 'POST':
+            form = CategoryReplacementForm(request.POST, current_category=category)
+            if form.is_valid():
+                replacement_category = form.cleaned_data['replacement_category']
+                # Replace transactions with the selected replacement category
+                Transaction.objects.filter(category=category).update(category=replacement_category)
+                # Delete the category
+                category.delete()
+                return redirect('user_dash')
+        else:
+            form = CategoryReplacementForm(current_category=category)
 
-    return render(request, 'cannot_delete_category.html', {'category': category, 'form': form, 'transactions': transactions_with_category})
+        return render(request, 'cannot_delete_category.html', {'category': category, 'form': form, 'transactions': transactions_with_category})
+    else:
+        # No transactions associated with the category, delete it directly
+        category.delete()
+        return redirect('user_dash')
 
 @authenticated_user
 def delete_transactions(request, category_id):
