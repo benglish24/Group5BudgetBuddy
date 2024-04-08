@@ -23,7 +23,7 @@
                       <li class="list-group-item text-light">Available to Spend: ${{ dashboard.spending|floatformat:2|intcomma }}</li>
                       <li class="list-group-item text-light">Total Money Spent: ${{ total_amount|floatformat:2|intcomma }}</li>
                   </ul>
-                  <a href="{% url 'update_information' %}" class="btn btn-primary btn-sm mt-2">Update Information</a>
+                  <a href="{% url 'update_information' %}" class="btn btn-primary btn mt-2">Update Information</a>
               </div>
           </div>
 
@@ -44,7 +44,7 @@
                       </li>
                       {% endfor %}
                   </ul>
-                  <a href="{% url 'add_category' %}" class="btn btn-primary btn-sm">Add Category</a>
+                  <a href="{% url 'add_category' %}" class="btn btn-primary btn">Add Category</a>
               </div>
           </div>
       </div>
