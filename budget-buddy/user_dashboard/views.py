@@ -1,10 +1,11 @@
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
-from django.db.models import Sum 
+from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Sum
+from django.contrib import messages
 
 from .models import UserDashboard, Transaction, Category
 from .decorators import authenticated_user
-from .forms import TransactionForm, UploadForm, CategoryForm, SalaryForm
+from .forms import TransactionForm, UploadForm, CategoryForm, SalaryForm, CategoryReplacementForm
 
 from collections import defaultdict
 
@@ -23,7 +24,7 @@ def user_dashboard(request):
 
     dct = defaultdict(int)
 
-    # Calculate total transaction amount for current user 
+    # Calculate total transaction amount for current user
     total_amount = transactions.aggregate(total_amount=Sum('amount'))['total_amount'] or 0
 
     for t in transactions:
@@ -144,20 +145,69 @@ def upload_transaction(request):
     context = {"form" : form}
     return render(request, 'upload.html', context)
 
-
+@authenticated_user
 def add_category(request):
     if request.method == 'POST':
         form = CategoryForm(request.POST)
         if form.is_valid():
+            category_name = form.cleaned_data['name']
+            # Check if a category with the same name already exists
+            if Category.objects.filter(name=category_name, user=request.user).exists():
+                # If it exists, display a warning message
+                messages.warning(request, 'Category with this name already exists.')
+                return redirect('add_category')  # Redirect back to the add category page
+
+            # If the category doesn't exist, proceed to save it
             category = form.save(commit=False)
             category.user = request.user
             category.save()
             return redirect('/')
 
     form = CategoryForm()
-    context = {'form' : form, 'button_text' : 'Confirm'}
+    context = {'form': form, 'button_text': 'Confirm'}
     return render(request, 'category_form.html', context)
 
+@authenticated_user
+def delete_category(request, category_id):
+    category = Category.objects.get(id=category_id)
+    transactions_with_category = Transaction.objects.filter(category=category)
+
+    if transactions_with_category.exists():
+        if request.method == 'POST':
+            form = CategoryReplacementForm(request.POST, current_category=category)
+            if form.is_valid():
+                replacement_category = form.cleaned_data['replacement_category']
+                # Replace transactions with the selected replacement category
+                Transaction.objects.filter(category=category).update(category=replacement_category)
+                # Delete the category
+                category.delete()
+                return redirect('user_dash')
+        else:
+            form = CategoryReplacementForm(current_category=category)
+
+        return render(request, 'cannot_delete_category.html', {'category': category, 'form': form, 'transactions': transactions_with_category})
+    else:
+        # No transactions associated with the category, delete it directly
+        category.delete()
+        return redirect('user_dash')
+
+@authenticated_user
+def delete_transactions(request, category_id):
+    category = Category.objects.get(id=category_id)
+    transactions_with_category = Transaction.objects.filter(category=category)
+
+    if request.method == 'POST':
+        # Delete transactions associated with the category
+        transactions_with_category.delete()
+
+        # Delete the category
+        category.delete()
+
+        return redirect('user_dash')
+
+    return render(request, 'delete_transactions.html', {'category': category, 'transactions': transactions_with_category})
+
+@authenticated_user
 def update_information(request):
     dashboard = UserDashboard.objects.get(custom_user=request.user)
     if request.method == 'POST':

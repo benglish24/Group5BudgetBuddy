@@ -36,6 +36,18 @@ class CategoryForm(ModelForm):
         model = Category
         fields = ['name']
 
+from django import forms
+from .models import Category
+
+class CategoryReplacementForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        current_category = kwargs.pop('current_category', None)
+        super(CategoryReplacementForm, self).__init__(*args, **kwargs)
+        self.fields['replacement_category'].queryset = Category.objects.exclude(id=current_category.id)
+
+    replacement_category = forms.ModelChoiceField(queryset=Category.objects.all(), label='Replacement Category')
+
+
 class SalaryForm(ModelForm):
     class Meta:
         model = UserDashboard
