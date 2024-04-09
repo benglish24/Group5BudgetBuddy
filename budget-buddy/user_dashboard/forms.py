@@ -51,4 +51,9 @@ class CategoryReplacementForm(forms.Form):
 class SalaryForm(ModelForm):
     class Meta:
         model = UserDashboard
-        fields = ['salary', 'fixed_percentage','saving_percentage']
+        fields = ['salary', 'fixed_percentage','saving_percentage', 'start_date', 'frequency']
+
+        # makes date input in form an actual date picker
+        widgets = {
+            'start_date' : forms.widgets.DateInput(attrs={'type' : 'date'})
+        }

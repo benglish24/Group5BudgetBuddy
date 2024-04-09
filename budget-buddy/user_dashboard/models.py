@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import Sum
 from users.models import CustomUser
+from datetime import date
 
 class UserDashboard(models.Model):
     custom_user = models.OneToOneField("users.CustomUser", on_delete=models.CASCADE)
@@ -8,6 +9,13 @@ class UserDashboard(models.Model):
     saving_percentage = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     fixed_percentage = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     spending = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    start_date = models.DateField(default=date.today)  # New field for start date
+    frequency_choices = [
+        ('Weekly', 'Weekly'),
+        ('Bi-weekly', 'Bi-weekly'),
+        ('Monthly', 'Monthly')
+    ]
+    frequency = models.CharField(max_length=10, choices=frequency_choices, default='weekly')  # New field for frequency choice
 
     def calculate_budget(self):
         # Perform budget calculation based on salary, saving percentage, etc.

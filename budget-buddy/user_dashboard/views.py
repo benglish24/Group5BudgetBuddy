@@ -5,8 +5,8 @@ from django.contrib import messages
 
 from .models import UserDashboard, Transaction, Category
 from .decorators import authenticated_user
-from .forms import TransactionForm, UploadForm, CategoryForm, SalaryForm, CategoryReplacementForm
-
+from .forms import TransactionForm, UploadForm, CategoryForm, SalaryForm, CategoryReplacementForm, TimePeriodForm
+from datetime import timedelta
 from collections import defaultdict
 
 import csv
@@ -221,4 +221,3 @@ def update_information(request):
         form = SalaryForm(instance=dashboard)
     context = {'form': form, 'button_text': 'Update Information'}
     return render(request, 'update_information_form.html', context)
-

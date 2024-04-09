@@ -20,6 +20,8 @@
                       <li class="list-group-item text-light">Salary: ${{ dashboard.salary|floatformat:2|intcomma }}</li>
                       <li class="list-group-item text-light">Fixed Amount: {{ dashboard.fixed_percentage }}%</li>
                       <li class="list-group-item text-light">Saving Amount: {{ dashboard.saving_percentage }}%</li>
+                      <li class="list-group-item text-light">Start Date: {{ dashboard.start_date }}</li>
+                      <li class="list-group-item text-light">Period: {{ dashboard.frequency }}</li>
                   </ul>
                   <a href="{% url 'update_information' %}" class="btn btn-primary btn mt-2">Update Information</a>
               </div>
