@@ -14,6 +14,7 @@ class UserDashboard(models.Model):
         if self.salary * (self.saving_percentage / 100) == 0:
             return 0
         budget = self.salary * (self.saving_percentage / 100)
+
         # You can add more calculations based on your specific requirements
         return budget
     
@@ -27,6 +28,7 @@ class UserDashboard(models.Model):
     def save(self, *args, **kwargs):
         # Calculate and update spending when saving UserDashboard instance
         self.spending = self.calculate_budget()
+        self.fixed_percentage = 50.00
         super().save(*args, **kwargs)
 
     def __str__(self):
