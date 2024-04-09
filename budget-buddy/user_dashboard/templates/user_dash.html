@@ -55,6 +55,12 @@
         <div class="card mb-3 flex-grow-1">
             <div class="card-body">
                 <h3 class="card-title">Expense Overview:</h3>
+                <!-- Display Time Period -->
+                <div style="position: relative; margin-bottom: 20px;">
+                  <div style="color: aqua; font-size: 14pt; text-align: center;">
+                      Time Period: {{ dashboard.start_date }} - {{ dashboard.end_date }}
+                  </div>
+              </div>
                 <div style="position: relative;">
                     <canvas id="doughnutChart" width="250" height="250"></canvas>
                     <div style="position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%); text-align: center;">

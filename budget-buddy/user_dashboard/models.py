@@ -1,7 +1,8 @@
 from django.db import models
 from django.db.models import Sum
 from users.models import CustomUser
-from datetime import date
+from datetime import date, timedelta
+
 
 class UserDashboard(models.Model):
     custom_user = models.OneToOneField("users.CustomUser", on_delete=models.CASCADE)
@@ -9,13 +10,14 @@ class UserDashboard(models.Model):
     saving_percentage = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     fixed_percentage = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     spending = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    start_date = models.DateField(default=date.today)  # New field for start date
+    start_date = models.DateField(default=date.today)
+    end_date = models.DateField(null=True, blank=True)
     frequency_choices = [
         ('Weekly', 'Weekly'),
         ('Bi-weekly', 'Bi-weekly'),
         ('Monthly', 'Monthly')
     ]
-    frequency = models.CharField(max_length=10, choices=frequency_choices, default='weekly')  # New field for frequency choice
+    frequency = models.CharField(max_length=10, choices=frequency_choices, default='Weekly')  # New field for frequency choice
 
     def calculate_budget(self):
         # Perform budget calculation based on salary, saving percentage, etc.
@@ -37,7 +39,22 @@ class UserDashboard(models.Model):
     def save(self, *args, **kwargs):
         # Calculate and update spending when saving UserDashboard instance
         self.spending = self.calculate_budget()
+        self.end_date = self.calculate_end_date()
         super().save(*args, **kwargs)
+
+    def calculate_end_date(self):
+        if self.start_date and self.frequency:
+            if self.frequency == 'Weekly':
+                return self.start_date + timedelta(days=7)
+            elif self.frequency == 'Bi-weekly':
+                return self.start_date + timedelta(days=14)
+            elif self.frequency == 'Monthly':
+                # Calculate end of month
+                next_month = self.start_date.replace(day=28) + timedelta(days=4)  # Move to end of month
+                return next_month - timedelta(days=next_month.day)
+            else:
+                raise ValueError("Invalid frequency")
+        return None  # Return None if start_date or frequency is not set
 
     def __str__(self):
         return f"{self.custom_user.username}'s Dashboard"
