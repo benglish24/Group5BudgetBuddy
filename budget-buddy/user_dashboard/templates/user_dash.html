@@ -20,7 +20,6 @@
                       <li class="list-group-item text-light">Salary: ${{ dashboard.salary|floatformat:2|intcomma }}</li>
                       <li class="list-group-item text-light">Fixed Amount: {{ dashboard.fixed_percentage }}%</li>
                       <li class="list-group-item text-light">Saving Amount: {{ dashboard.saving_percentage }}%</li>
-                      <li class="list-group-item text-light">Spending Amount: ${{ dashboard.spending|floatformat:2|intcomma }}</li>
                   </ul>
                   <a href="{% url 'update_information' %}" class="btn btn-primary btn mt-2">Update Information</a>
               </div>
@@ -50,15 +49,21 @@
 
       <!-- Right Column -->
       <div class="col-md-6 d-flex flex-column">
-          <!-- Expense Overview Chart Card -->
-          <div class="card mb-3 flex-grow-1">
-              <div class="card-body">
-                  <h3 class="card-title">Expense Overview:</h3>
-                  <canvas id="doughnutChart" width="250" height="250"></canvas>
-              </div>
-          </div>
+        <!-- Expense Overview Chart Card -->
+        <div class="card mb-3 flex-grow-1">
+            <div class="card-body">
+                <h3 class="card-title">Expense Overview:</h3>
+                <div style="position: relative;">
+                    <canvas id="doughnutChart" width="250" height="250"></canvas>
+                    <div style="position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                        <div style = "color:aqua; font-size: 14pt;" >Total Spent: ${{ total_amount|floatformat:2|intcomma }}</div>
+                        <div style = "color:greenyellow; font-size: 14pt;">Spending Amount: ${{ dashboard.spending|floatformat:2|intcomma }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
       </div>
-  </div>
+
 
     <!-- Transactions Card -->
     <div class="card">

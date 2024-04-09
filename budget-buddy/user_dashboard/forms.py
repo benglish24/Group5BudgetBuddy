@@ -51,4 +51,4 @@ class CategoryReplacementForm(forms.Form):
 class SalaryForm(ModelForm):
     class Meta:
         model = UserDashboard
-        fields = ['salary', 'saving_percentage']
+        fields = ['salary', 'fixed_percentage','saving_percentage']

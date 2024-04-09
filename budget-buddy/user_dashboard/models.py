@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Sum 
+from django.db.models import Sum
 from users.models import CustomUser
 
 class UserDashboard(models.Model):
@@ -14,21 +14,21 @@ class UserDashboard(models.Model):
         if self.salary * (self.saving_percentage / 100) == 0:
             return 0
         budget = self.salary * (self.saving_percentage / 100)
+        budget = self.salary - budget
 
         # You can add more calculations based on your specific requirements
         return budget
-    
+
     def total_amount_for_user(self):
         total = 0
         transactions = Transaction.objects.filter(user=self.custom_user)
         for transaction in transactions:
             total += transaction.amount
         return total
-    
+
     def save(self, *args, **kwargs):
         # Calculate and update spending when saving UserDashboard instance
         self.spending = self.calculate_budget()
-        self.fixed_percentage = 50.00
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -62,6 +62,5 @@ class Transaction(models.Model):
 
     def get_category(self):
         return str(self.category.name)
-    
 
-    
+
