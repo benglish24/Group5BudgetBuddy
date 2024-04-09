@@ -302,12 +302,12 @@ class GoogleCloud(object):
 
 
 import google.generativeai as genai
+from dotenv import load_dotenv, dotenv_values
 
-GOOGLE_API_KEY = "AIzaSyCFHSwgo4B4C3oJ9W--zhfG29qBD2Utg8U"
-os.environ['GOOGLE_API_KEY'] = "AIzaSyCFHSwgo4B4C3oJ9W--zhfG29qBD2Utg8U"
+load_dotenv()
 
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 genai.configure(api_key=GOOGLE_API_KEY)
-
 
 
 class GoogleGemini(object):
@@ -322,10 +322,11 @@ class GoogleGemini(object):
                                         best falls under given these categories: {category_names}.
 
                                         IMPORTANT: Output only in JSON format with keys named "date", "amount", and "category". 
-                                        Do NOT label the JSON as a json. The first character in your output should be a bracket denoting
+                                        Do NOT label the JSON as a json. The first character of the output should be a bracket denoting
                                         the beginning of the JSON string.
 
-                                        For any of the three values you cannot find, output the value as an empty string.
+                                        For any of the three values you cannot find, output the value as a pair of empty quotes.
+                                        Do NOT have any of the values be None. 
                                         Date must be formatted in the form MM/DD/YYYY. Output only the JSON string and nothing else.
 
                                         TEXT: {receipt_data}
