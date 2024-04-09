@@ -12,6 +12,7 @@ class UserDashboard(models.Model):
     spending = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     start_date = models.DateField(default=date.today)
     end_date = models.DateField(null=True, blank=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     frequency_choices = [
         ('Weekly', 'Weekly'),
         ('Bi-weekly', 'Bi-weekly'),
@@ -30,16 +31,18 @@ class UserDashboard(models.Model):
         return budget
 
     def total_amount_for_user(self):
-        total = 0
-        transactions = Transaction.objects.filter(user=self.custom_user)
-        for transaction in transactions:
-            total += transaction.amount
-        return total
+        total = Transaction.objects.filter(
+                    user=self.custom_user,
+                    date_of__range=[self.start_date, self.end_date]
+                ).aggregate(total_amount=Sum('amount'))['total_amount']
+        return total or 0
+
 
     def save(self, *args, **kwargs):
         # Calculate and update spending when saving UserDashboard instance
         self.spending = self.calculate_budget()
         self.end_date = self.calculate_end_date()
+        self.total_amount = self.total_amount_for_user()
         super().save(*args, **kwargs)
 
     def calculate_end_date(self):

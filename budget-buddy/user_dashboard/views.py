@@ -13,36 +13,50 @@ import json
 
 @authenticated_user
 def user_dashboard(request):
-    # Get or create the UserDashboard object for    the current user
-
-    # user_dashboard, created = UserDashboard.objects.get_or_create(custom_user=request.user)
-    # If the object was just created, it means it's empty and you might want to set default values here
     dashboard = UserDashboard.objects.get(custom_user=request.user)
     transactions = Transaction.objects.filter(user=request.user)
     categories = Category.objects.filter(user=request.user)
+    total_amount = dashboard.total_amount_for_user()
 
-    dct = defaultdict(int)
+    # Filter transactions based on the start and end dates from the dashboard
+    start_date = dashboard.start_date
+    end_date = dashboard.end_date
+    transactions_within_period = Transaction.objects.filter(user=request.user, date_of__range=[start_date, end_date])
 
-    # Calculate total transaction amount for current user
-    total_amount = transactions.aggregate(total_amount=Sum('amount'))['total_amount'] or 0
+    # Calculate expenses specifically for the doughnut chart within the given time period
+    dct_chart = defaultdict(int)
+    for t in transactions_within_period:
+        dct_chart[t.get_category()] += t.get_amount()
 
+    expenses_for_chart = json.dumps([
+        {
+            'category': category,
+            'amount': dct_chart[category]
+        }
+        for category in dct_chart
+    ])
+
+    # Calculate total expenses for all transactions regardless of the time frame
+    dct_all = defaultdict(int)
     for t in transactions:
-        dct[t.get_category()] += t.get_amount()
+        dct_all[t.get_category()] += t.get_amount()
 
     expenses = json.dumps([
         {
-        'category' : category,
-        'amount' : dct[category]
+            'category': category,
+            'amount': dct_all[category]
         }
-        for category in dct
+        for category in dct_all
     ])
 
-    context = {'dashboard': dashboard,
-               'transactions' : transactions,
-               'categories' : categories,
-               'expenses' : expenses,
-               'total_amount' : total_amount,
-               }
+    context = {
+        'dashboard': dashboard,
+        'transactions': transactions,
+        'categories': categories,
+        'expenses': expenses,
+        'expenses_for_chart': expenses_for_chart,
+        'total_amount': total_amount,
+    }
 
     return render(request, 'user_dash.html', context)
 

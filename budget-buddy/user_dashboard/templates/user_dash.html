@@ -64,7 +64,7 @@
                 <div style="position: relative;">
                     <canvas id="doughnutChart" width="250" height="250"></canvas>
                     <div style="position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-                        <div style = "color:aqua; font-size: 14pt;" >Total Spent: ${{ total_amount|floatformat:2|intcomma }}</div>
+                        <div style = "color:aqua; font-size: 14pt;" >Total Spent: ${{ dashboard.total_amount|floatformat:2|intcomma }}</div>
                         <div style = "color:greenyellow; font-size: 14pt;">Spending Amount: ${{ dashboard.spending|floatformat:2|intcomma }}</div>
                     </div>
                 </div>
@@ -110,7 +110,7 @@
 </div>
 
 <!-- JavaScript -->
-<div style="display: none" id="expenses" json-data="{{ expenses }}"></div>
+<div style="display: none" id="expenses" json-data="{{ expenses_for_chart  }}"></div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
   function loadData(selector) {
