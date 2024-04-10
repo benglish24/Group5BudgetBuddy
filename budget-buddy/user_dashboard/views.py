@@ -374,9 +374,9 @@ def upload_receipt(request):
 
             dct = json.loads(response.text)
 
-            date_string = dct['date']
-            amount = dct['amount']
-            category_name = dct['category'].title()
+            date_string = "" if 'date' not in dct else dct['date']
+            amount = "" if 'amount' not in dct else dct['amount']
+            category_name = "" if 'category' not in dct else dct['category'].title()
 
             return redirect(reverse('add_transaction')+ f"?date={date_string}&amount={amount}&category={category_name}")
 
