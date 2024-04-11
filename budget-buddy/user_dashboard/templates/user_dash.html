@@ -5,6 +5,18 @@
 <h1 class="title">BudgetBuddy Dashboard</h1>
 {% endblock title %}
 
+<head>
+  <style>
+      .transaction-highlight {
+          color: green !important;
+      }
+
+      .transaction-outside-period {
+          color: white !important;
+      }
+  </style>
+</head>
+
 
 {% block content %}
 <div class="container mt-4">
@@ -93,7 +105,8 @@
           <tbody>
             {% for t in transactions %}
             <tr>
-              <td class="text-light">{{ t.date_of }}</td>
+              <tr {% if t.date_of >= dashboard.start_date and t.date_of <= dashboard.end_date %}style="color: #90EE90;"{% else %}style="color: white;"{% endif %}>
+                <td>{{ t.date_of }}</td>
               <td class="text-light">${{ t.amount }}</td>
               <td class="text-light">{{ t.category }}</td>
               <td>
