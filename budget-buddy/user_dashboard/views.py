@@ -275,7 +275,7 @@ src_path = (parent_dir / rel_path).resolve()
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = f"{src_path}"
 
 
-class GoogleCloud(object):
+class CloudVision(object):
 
     client = vision.ImageAnnotatorClient()
 
@@ -286,7 +286,7 @@ class GoogleCloud(object):
 
         image = vision.Image(content=content)
 
-        response = GoogleCloud.client.text_detection(image=image)
+        response = CloudVision.client.text_detection(image=image)
         texts = response.text_annotations
 
         if response.error.message:
@@ -308,13 +308,13 @@ GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 genai.configure(api_key=GOOGLE_API_KEY)
 
 
-class GoogleGemini(object):
+class Gemini(object):
     
     model = genai.GenerativeModel('gemini-pro')
 
     @staticmethod
     def get_gemini_response(receipt_data, category_names):
-        response = GoogleGemini.model.generate_content(f''' 
+        response = Gemini.model.generate_content(f''' 
                                         Here is some text from a receipt or invoice. Tell me the date of the transaction, the
                                         total amount of money involved in the transaction, and the category that this transaction
                                         best falls under given these categories: {category_names}.
@@ -352,7 +352,7 @@ def upload_receipt(request):
             b64_img = base64.b64encode(img_obj.read())
             b64_string = str(b64_img, 'utf-8')
             
-            texts = GoogleCloud.detect_text(b64_string)
+            texts = CloudVision.detect_text(b64_string)
             texts_as_string = ""
 
             for t in texts:
@@ -364,7 +364,7 @@ def upload_receipt(request):
 
             # tries the API call at most three times before giving up
             for _ in range(3):
-                response = GoogleGemini.get_gemini_response(texts_as_string, category_names)
+                response = Gemini.get_gemini_response(texts_as_string, category_names)
                 if response.parts: 
                     break
             
