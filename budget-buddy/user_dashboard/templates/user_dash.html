@@ -25,7 +25,7 @@
       <!-- Left Column -->
       <div class="col-md-6 d-flex flex-column">
           <!-- Account Overview Card -->
-          <div class="card mb-3 flex-grow-1">
+          <div class="card mb-4 flex-grow-1">
               <div class="card-body">
                   <h4 class="card-title">Account Overview:</h4>
                   <ul class="list-group">
@@ -39,31 +39,41 @@
           </div>
 
           <!-- Tracked Categories Card -->
-          <div class="card mb-3 flex-grow-1">
-              <div class="card-body">
-                  <h4 class="card-title">Your Tracked Expense Categories</h4>
-                  <ul class="list-group mb-2" style="height: 200px; overflow-y: auto;">
-                      {% for category in categories %}
-                      <li class="list-group-item d-flex justify-content-between align-items-center text-light">
-                          {{ category }}
-                          <form method="post" action="{% url 'delete_category' category.id %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-sm btn-danger">
-                                <i class="fas fa-trash-alt"></i> <!-- Font Awesome delete icon -->
-                            </button>
-                        </form>
-                      </li>
-                      {% endfor %}
-                  </ul>
-                  <a href="{% url 'add_category' %}" class="btn btn-primary btn">Add Category</a>
-              </div>
+          <div class="card mb-4 flex-grow-1">
+            <div class="card-body">
+                <h4 class="card-title">Your Tracked Expense Categories</h4>
+                <ul class="list-group mb-2" style="height: 200px; overflow-y: auto;">
+                    {% for category in categories %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center text-light">
+                        <div>{{ category }}</div>
+                        <div>
+                            <div class="d-inline-block"> <!-- Wrap each button in a div with d-inline-block class -->
+                                <form method="post" action="{% url 'delete_category' category.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-warning btn-sm">Edit</button>
+                                </form>
+                            </div>
+                            <div class="d-inline-block"> <!-- Wrap each button in a div with d-inline-block class -->
+                                <form class="delete-form" method="post" action="{% url 'delete_transactions' category.id %}">
+                                    {% csrf_token %}
+                                    <button type="button" class="btn btn-sm btn-danger delete-btn">Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <a href="{% url 'add_category' %}" class="btn btn-primary btn">Add Category</a>
+            </div>
           </div>
-      </div>
+        </div>
+
 
       <!-- Right Column -->
       <div class="col-md-6 d-flex flex-column">
         <!-- Expense Overview Chart Card -->
-        <div class="card mb-3 flex-grow-1">
+        <div class="card mb-4 flex-grow-1">
             <div class="card-body">
                 <h3 class="card-title">Expense Overview:</h3>
                 <!-- Display Time Period -->
@@ -85,7 +95,7 @@
 
 
     <!-- Transactions Card -->
-    <div class="card">
+    <div class="card mb-4 flex-grow-1" style="margin-left: 12px; max-width: calc(100% - 22px);">
       <div class="card-body">
         <h4 class="card-title">Your Transactions</h4>
         <div class="mb-3">
@@ -156,5 +166,21 @@ var myDoughnutChart = new Chart(ctx, {
   }
 });
 
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      const deleteButtons = document.querySelectorAll(".delete-btn");
+
+      deleteButtons.forEach(function (button) {
+          button.addEventListener("click", function () {
+              const confirmation = confirm("Are you sure you want to delete this category?\nIt will delete all transactions associated with it");
+              if (confirmation) {
+                  const form = button.closest(".delete-form");
+                  form.submit();
+              }
+          });
+      });
+  });
 </script>
 {% endblock content %}

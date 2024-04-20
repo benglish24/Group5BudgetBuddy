@@ -41,9 +41,6 @@ class CategoryForm(ModelForm):
         model = Category
         fields = ['name']
 
-from django import forms
-from .models import Category
-
 class CategoryReplacementForm(forms.Form):
     def __init__(self, *args, **kwargs):
         current_category = kwargs.pop('current_category', None)

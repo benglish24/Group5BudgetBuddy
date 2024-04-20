@@ -1,28 +1,32 @@
 {% extends "base_generic.html" %}
 {% block title %}
-    Cannot Delete Category
+    Replace Category
 {% endblock title %}
 {% block content %}
-    <h1>Cannot Delete Category</h1>
-    <p>The category "{{ category.name }}" cannot be deleted because it is used in the following transactions:</p>
-    <ul>
-        {% for transaction in transactions %}
-            <li>{{ transaction }}</li>
-        {% endfor %}
-    </ul>
-    <p>Please choose a new category for the affected transactions:</p>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Replace Transactions</button>
-        <a href="{% url 'user_dash' %}" class="btn btn-secondary">Cancel</a>
-    </form>
+    <style>
+        .block-content {
+            text-align: center;
+        }
 
-    <hr> <!-- Add a horizontal rule to visually separate the two forms -->
-
-    <p>Alternatively, you can delete the category and its associated transactions:</p>
-    <form action="{% url 'delete_transactions' category.id %}" method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-danger">Delete Transactions</button>
-    </form>
+        .block-content ul {
+            text-align: left;
+            display: inline-block;
+            padding-left: 0;
+        }
+    </style>
+    <div class="block-content">
+        <p>The category "{{ category.name }}" is used in the following transactions:</p>
+        <ul>
+            {% for transaction in transactions %}
+                <li>{{ transaction }}</li>
+            {% endfor %}
+        </ul>
+        <p>Please choose a new category:</p>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Replace Transactions</button>
+            <a href="{% url 'user_dash' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
 {% endblock content %}
