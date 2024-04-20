@@ -93,7 +93,11 @@
                         <canvas id="doughnutChart" width="250" height="250"></canvas>
                         <div style="position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
                             <div style="color: aqua; font-size: 14pt;">Total Spent: ${{ dashboard.total_amount|floatformat:2|intcomma }}</div>
+                            {% if dashboard.spending < 0%}
+                            <div style="color: rgb(255, 47, 47); font-size: 14pt;">Spending Amount: ${{ dashboard.spending|floatformat:2|intcomma }}</div>
+                            {% else %}
                             <div style="color: greenyellow; font-size: 14pt;">Spending Amount: ${{ dashboard.spending|floatformat:2|intcomma }}</div>
+                            {% endif %}
                         </div>
                     </div>
                 {% endif %}
