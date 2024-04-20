@@ -133,6 +133,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+env
 
 # Spyder project settings
 .spyderproject
@@ -1073,3 +1074,5 @@ FodyWeavers.xsd
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,visualstudiocode,pycharm,linux,macos,emacs,vim,windows,sublimetext,jupyternotebooks,eclipse,intellij+all,pydev,python,django
+
+detect-text-419721-92e36850ead7.json

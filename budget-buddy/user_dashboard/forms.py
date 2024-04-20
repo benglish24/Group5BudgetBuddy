@@ -31,6 +31,11 @@ class UploadForm(forms.Form):
                                       'help_text' : 'Select a .csv file to upload.'}))
 
 
+class UploadReceiptForm(forms.Form):
+    receipt_img = forms.ImageField(
+        required=False,
+    )
+
 class CategoryForm(ModelForm):
     class Meta:
         model = Category

@@ -13,4 +13,5 @@ urlpatterns = [
     path('delete_category/<int:category_id>/', delete_category, name='delete_category'),
     path('delete_transactions/<int:category_id>/', delete_transactions, name='delete_transactions'),
     path('update_information/', update_information, name='update_information'),
+    path('upload_receipt/', upload_receipt, name='upload_receipt'),
 ]
