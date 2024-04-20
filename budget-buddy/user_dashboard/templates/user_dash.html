@@ -78,17 +78,25 @@
                 <h3 class="card-title">Expense Overview:</h3>
                 <!-- Display Time Period -->
                 <div style="position: relative; margin-bottom: 20px;">
-                  <div style="color: aqua; font-size: 14pt; text-align: center;">
-                      Time Period: {{ dashboard.start_date }} - {{ dashboard.end_date }}
-                  </div>
-              </div>
-                <div style="position: relative;">
-                    <canvas id="doughnutChart" width="250" height="250"></canvas>
-                    <div style="position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-                        <div style = "color:aqua; font-size: 14pt;" >Total Spent: ${{ dashboard.total_amount|floatformat:2|intcomma }}</div>
-                        <div style = "color:greenyellow; font-size: 14pt;">Spending Amount: ${{ dashboard.spending|floatformat:2|intcomma }}</div>
+                    <div style="color: aqua; font-size: 14pt; text-align: center;">
+                        Time Period: {{ dashboard.start_date }} - {{ dashboard.end_date }}
                     </div>
                 </div>
+                {% if dashboard.total_amount == 0 %}
+                    <!-- Indicator when no expenses are tracked -->
+                    <div style="text-align: center;">
+                        <h5>No expenses are currently being tracked.</h5>
+                        <p>Add expenses to start tracking your spending.</p>
+                    </div>
+                {% else %}
+                    <div style="position: relative;">
+                        <canvas id="doughnutChart" width="250" height="250"></canvas>
+                        <div style="position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                            <div style="color: aqua; font-size: 14pt;">Total Spent: ${{ dashboard.total_amount|floatformat:2|intcomma }}</div>
+                            <div style="color: greenyellow; font-size: 14pt;">Spending Amount: ${{ dashboard.spending|floatformat:2|intcomma }}</div>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         </div>
       </div>
