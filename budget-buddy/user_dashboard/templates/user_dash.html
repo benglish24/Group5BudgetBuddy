@@ -1,10 +1,8 @@
 {% extends "base_generic.html" %}
 {% load humanize %}
-
 {% block title %}
-<h1 class="title">BudgetBuddy Dashboard</h1>
+  <h1 class="title">BudgetBuddy Dashboard</h1>
 {% endblock title %}
-
 <head>
   <style>
       .transaction-highlight {
@@ -16,138 +14,148 @@
       }
   </style>
 </head>
-
-
 {% block content %}
-<div class="container mt-4">
-  <div class="card-body">
-    <div class="row">
-      <!-- Left Column -->
-      <div class="col-md-6 d-flex flex-column">
+  <div class="container mt-4">
+    <div class="card-body">
+      <div class="row">
+        <!-- Left Column -->
+        <div class="col-md-6 d-flex flex-column">
           <!-- Account Overview Card -->
           <div class="card mb-4 flex-grow-1">
-              <div class="card-body">
-                  <h4 class="card-title">Account Overview:</h4>
-                  <ul class="list-group">
-                      <li class="list-group-item text-light">Salary: ${{ dashboard.salary|floatformat:2|intcomma }}</li>
-                      <li class="list-group-item text-light">Saving Amount: {{ dashboard.saving_percentage }}%</li>
-                      <li class="list-group-item text-light">Start Date: {{ dashboard.start_date }}</li>
-                      <li class="list-group-item text-light">Period: {{ dashboard.frequency }}</li>
-                  </ul>
-                  <a href="{% url 'update_information' %}" class="btn btn-primary btn mt-2">Update Information</a>
-              </div>
+            <div class="card-body">
+              <h4 class="card-title">Account Overview:</h4>
+              <ul class="list-group">
+                <li class="list-group-item text-light">Pay Amount: ${{ dashboard.salary|floatformat:2|intcomma }}</li>
+                <li class="list-group-item text-light">Saving Amount: {{ dashboard.saving_percentage }}%</li>
+                <li class="list-group-item text-light">Start Date: {{ dashboard.start_date }}</li>
+                <li class="list-group-item text-light">Period: {{ dashboard.frequency }}</li>
+              </ul>
+              <a href="{% url 'update_information' %}"
+                 class="btn btn-primary btn mt-2">Update Information</a>
+            </div>
           </div>
-
           <!-- Tracked Categories Card -->
           <div class="card mb-4 flex-grow-1">
             <div class="card-body">
-                <h4 class="card-title">Your Tracked Expense Categories</h4>
-                <ul class="list-group mb-2" style="height: 200px; overflow-y: auto;">
-                    {% for category in categories %}
-                    <li class="list-group-item d-flex justify-content-between align-items-center text-light">
-                        <div>{{ category }}</div>
-                        <div>
-                            <div class="d-inline-block"> <!-- Wrap each button in a div with d-inline-block class -->
-                                <form method="post" action="{% url 'delete_category' category.id %}">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-warning btn-sm">Edit</button>
-                                </form>
-                            </div>
-                            <div class="d-inline-block"> <!-- Wrap each button in a div with d-inline-block class -->
-                                <form class="delete-form" method="post" action="{% url 'delete_transactions' category.id %}">
-                                    {% csrf_token %}
-                                    <button type="button" class="btn btn-sm btn-danger delete-btn">Delete
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </li>
-                    {% endfor %}
-                </ul>
-                <a href="{% url 'add_category' %}" class="btn btn-primary btn">Add Category</a>
+              <h4 class="card-title">Your Tracked Expense Categories</h4>
+              <ul class="list-group mb-2" style="height: 200px; overflow-y: auto;">
+                {% for category in categories %}
+                  <li class="list-group-item d-flex justify-content-between align-items-center text-light">
+                    <div>{{ category }}</div>
+                    <div>
+                      <div class="d-inline-block">
+                        <!-- Wrap each button in a div with d-inline-block class -->
+                        <form method="post" action="{% url 'delete_category' category.id %}">
+                          {% csrf_token %}
+                          <button type="submit" class="btn btn-warning btn-sm">Edit</button>
+                        </form>
+                      </div>
+                      <div class="d-inline-block">
+                        <!-- Wrap each button in a div with d-inline-block class -->
+                        <form class="delete-form"
+                              method="post"
+                              action="{% url 'delete_transactions' category.id %}">
+                          {% csrf_token %}
+                          <button type="button" class="btn btn-sm btn-danger delete-btn">Delete</button>
+                        </form>
+                      </div>
+                    </div>
+                  </li>
+                {% endfor %}
+              </ul>
+              <a href="{% url 'add_category' %}" class="btn btn-primary btn">Add Category</a>
             </div>
           </div>
         </div>
-
-
-      <!-- Right Column -->
-      <div class="col-md-6 d-flex flex-column">
-        <!-- Expense Overview Chart Card -->
-        <div class="card mb-4 flex-grow-1">
+        <!-- Right Column -->
+        <div class="col-md-6 d-flex flex-column">
+          <!-- Expense Overview Chart Card -->
+          <div class="card mb-4 flex-grow-1">
             <div class="card-body">
-                <h3 class="card-title">Expense Overview:</h3>
-                <!-- Display Time Period -->
-                <div style="position: relative; margin-bottom: 20px;">
-                    <div style="color: aqua; font-size: 14pt; text-align: center;">
-                        Time Period: {{ dashboard.start_date }} - {{ dashboard.end_date }}
-                    </div>
+              <h3 class="card-title">Expense Overview:</h3>
+              <!-- Display Time Period -->
+              <div style="position: relative; margin-bottom: 20px;">
+                <div style="color: aqua; font-size: 14pt; text-align: center;">
+                  Time Period: {{ dashboard.start_date }} - {{ dashboard.end_date }}
                 </div>
-                {% if dashboard.total_amount == 0 %}
-                    <!-- Indicator when no expenses are tracked -->
-                    <div style="text-align: center;">
-                        <h5>No expenses are currently being tracked.</h5>
-                        <p>Add expenses to start tracking your spending.</p>
-                    </div>
-                {% else %}
-                    <div style="position: relative;">
-                        <canvas id="doughnutChart" width="250" height="250"></canvas>
-                        <div style="position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-                            <div style="color: aqua; font-size: 14pt;">Total Spent: ${{ dashboard.total_amount|floatformat:2|intcomma }}</div>
-                            {% if dashboard.spending < 0%}
-                            <div style="color: rgb(255, 47, 47); font-size: 14pt;">Spending Amount: ${{ dashboard.spending|floatformat:2|intcomma }}</div>
-                            {% else %}
-                            <div style="color: greenyellow; font-size: 14pt;">Spending Amount: ${{ dashboard.spending|floatformat:2|intcomma }}</div>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% endif %}
+              </div>
+              {% if dashboard.total_amount == 0 %}
+                <!-- Indicator when no expenses are tracked -->
+                <div style="text-align: center;">
+                  <h5>No expenses are currently being tracked.</h5>
+                  <p>Add expenses to start tracking your spending.</p>
+                </div>
+              {% else %}
+                <div style="position: relative;">
+                  <canvas id="doughnutChart" width="250" height="250"></canvas>
+                  <div style="position: absolute;
+                              top: 52%;
+                              left: 50%;
+                              transform: translate(-50%, -50%);
+                              text-align: center">
+                    <div style="color: aqua; font-size: 14pt;">Total Spent: ${{ dashboard.total_amount|floatformat:2|intcomma }}</div>
+                    {% if dashboard.spending < 0 %}
+                      <div style="color: rgb(255, 47, 47); font-size: 14pt;">
+                        Spending Amount: ${{ dashboard.spending|floatformat:2|intcomma }}
+                      </div>
+                    {% else %}
+                      <div style="color: greenyellow; font-size: 14pt;">
+                        Spending Amount: ${{ dashboard.spending|floatformat:2|intcomma }}
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
             </div>
+          </div>
+        </div>
+        <!-- Transactions Card -->
+        <div class="card mb-4 flex-grow-1"
+             style="margin-left: 12px;
+                    max-width: calc(100% - 22px)">
+          <div class="card-body">
+            <h4 class="card-title">Your Transactions</h4>
+            <div class="mb-3">
+              <a href="{% url 'add_transaction' %}" class="btn btn-primary">Add Transaction</a>
+              <a href="{% url 'upload_transaction' %}" class="btn btn-secondary">Import Transactions</a>
+              <a href="{% url 'upload_receipt' %}" class="btn btn-info">Upload Receipt</a>
+            </div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col" class="text-light">Date of</th>
+                  <th scope="col" class="text-light">Amount</th>
+                  <th scope="col" class="text-light">Category</th>
+                  <th scope="col" class="text-light">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for t in transactions %}
+                  <tr>
+                    <tr {% if t.date_of >= dashboard.start_date and t.date_of <= dashboard.end_date %}style="color: #90EE90;"{% else %}style="color: white;"{% endif %}>
+                      <td>{{ t.date_of }}</td>
+                      <td class="text-light">${{ t.amount }}</td>
+                      <td class="text-light">{{ t.category }}</td>
+                      <td>
+                        <a href="{% url 'update_transaction' t.id %}"
+                           class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{% url 'delete_transaction' t.id %}"
+                           class="btn btn-danger btn-sm">Delete</a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
-
-
-    <!-- Transactions Card -->
-    <div class="card mb-4 flex-grow-1" style="margin-left: 12px; max-width: calc(100% - 22px);">
-      <div class="card-body">
-        <h4 class="card-title">Your Transactions</h4>
-        <div class="mb-3">
-          <a href="{% url 'add_transaction' %}" class="btn btn-primary">Add Transaction</a>
-          <a href="{% url 'upload_transaction' %}" class="btn btn-secondary">Import Transactions</a>
-          <a href="{% url 'upload_receipt' %}" class="btn btn-info">Upload Receipt</a>
-        </div>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col" class="text-light">Date of</th>
-              <th scope="col" class="text-light">Amount</th>
-              <th scope="col" class="text-light">Category</th>
-              <th scope="col" class="text-light">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for t in transactions %}
-            <tr>
-              <tr {% if t.date_of >= dashboard.start_date and t.date_of <= dashboard.end_date %}style="color: #90EE90;"{% else %}style="color: white;"{% endif %}>
-                <td>{{ t.date_of }}</td>
-              <td class="text-light">${{ t.amount }}</td>
-              <td class="text-light">{{ t.category }}</td>
-              <td>
-                <a href="{% url 'update_transaction' t.id %}" class="btn btn-warning btn-sm">Edit</a>
-                <a href="{% url 'delete_transaction' t.id %}" class="btn btn-danger btn-sm">Delete</a>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- JavaScript -->
-<div style="display: none" id="expenses" json-data="{{ expenses_for_chart  }}"></div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
+      <!-- JavaScript -->
+      <div style="display: none"
+           id="expenses"
+           json-data="{{ expenses_for_chart }}"></div>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script>
   function loadData(selector) {
     return JSON.parse(document.querySelector(selector).getAttribute("json-data"));
   }
@@ -170,17 +178,18 @@ var myDoughnutChart = new Chart(ctx, {
     ],
   },
   options: {
-    legend: {
-      labels: {
-        fontColor: 'white' // Set legend label color to white
+    plugins: {
+      legend: {
+        labels: {
+          color: 'white' // Set legend label color to white
+        }
       }
     }
   }
 });
 
-</script>
-
-<script>
+      </script>
+      <script>
   document.addEventListener("DOMContentLoaded", function () {
       const deleteButtons = document.querySelectorAll(".delete-btn");
 
@@ -194,5 +203,5 @@ var myDoughnutChart = new Chart(ctx, {
           });
       });
   });
-</script>
-{% endblock content %}
+      </script>
+    {% endblock content %}

@@ -82,6 +82,10 @@ def add_transaction(request):
             transaction = form.save(commit=False)
             transaction.user = request.user
             transaction.save()
+
+            dashboard = UserDashboard.objects.get(custom_user=request.user)
+            dashboard.save()
+
             return redirect('/')
 
     print("REQUEST.GET")
@@ -94,8 +98,7 @@ def add_transaction(request):
 
     print(date_of)
 
-    if date_of:
-        date_of = datetime(date_of.year, date_of.month, date_of.day)
+    if date_of: date_of = datetime(date_of.year, date_of.month, date_of.day)
 
     amount = "" if 'amount' not in request.GET else request.GET['amount']
 
@@ -127,6 +130,10 @@ def update_transaction(request, pk):
         form = TransactionForm(categories, request.POST, instance=transaction)
         if form.is_valid():
             form.save()
+
+            dashboard = UserDashboard.objects.get(custom_user=request.user)
+            dashboard.save()
+
             return redirect('/')
 
     context = {'form' : form, 'button_text' : 'Confirm'}
@@ -162,16 +169,29 @@ def upload_transaction(request):
             category_list = [c.name for c in categories]
             transactions = [] if 'file' not in request.FILES else csv.reader(decode_utf8(request.FILES['file']))
 
-            print(transactions)
+            date_idx, amount_idx, category_idx = -1, -1, -1
 
-            next(transactions) # skip header
+            first_lines = [next(transactions), next(transactions)]
+            print(first_lines)
+
+            response = Gemini.get_csv_columns(first_lines)
+
+            indices = json.loads(response.text)
+            print(indices)
+
+            date_idx, amount_idx, category_idx = indices['date'], indices['amount'], indices['category']
+
+            # print(transactions)
+            # next(transactions) # skip header
+
+
 
             for line in transactions:
                 if not line[0]: continue
 
-                date_of = line[0]
-                amount = line[1]
-                category_name = line[2].title()
+                date_of = line[date_idx]
+                amount = line[amount_idx]
+                category_name = line[category_idx].title()
                 category = None
 
                 if category_name in category_list:
@@ -186,6 +206,27 @@ def upload_transaction(request):
                 t.date_of, t.amount, t.category = date_of, amount, category
                 t.user = request.user
                 t.save()
+
+            date_of = first_lines[1][date_idx]
+            amount = first_lines[1][amount_idx]
+            category_name = first_lines[1][category_idx].title()
+            category = None
+
+            if category_name in category_list:
+                category = categories.get(name=category_name)
+            else:
+                category = Category(user=request.user, name=category_name)
+                category.save()
+                categories = Category.objects.filter(user=request.user)
+                category_list.append(category_name)
+
+            t = Transaction()
+            t.date_of, t.amount, t.category = date_of, amount, category
+            t.user = request.user
+            t.save()
+
+        dashboard = UserDashboard.objects.get(custom_user=request.user)
+        dashboard.save()
 
         return redirect('/')
 
@@ -202,10 +243,12 @@ def add_category(request):
         form = CategoryForm(request.POST)
         if form.is_valid():
             category_name = form.cleaned_data['name']
+
             # Check if a category with the same name already exists
             if Category.objects.filter(name=category_name, user=request.user).exists():
                 # If it exists, display a warning message
                 messages.warning(request, 'Category with this name already exists.')
+
                 return redirect('add_category')  # Redirect back to the add category page
 
             # If the category doesn't exist, proceed to save it
@@ -230,10 +273,13 @@ def delete_category(request, category_id):
             form = CategoryReplacementForm(request.POST, current_category=category)
             if form.is_valid():
                 replacement_category = form.cleaned_data['replacement_category']
+
                 # Replace transactions with the selected replacement category
                 Transaction.objects.filter(category=category).update(category=replacement_category)
+
                 # Delete the category
                 category.delete()
+
                 return redirect('user_dash')
         else:
             form = CategoryReplacementForm(current_category=category)
@@ -274,6 +320,7 @@ def update_information(request):
             return redirect('/')
     else:
         form = SalaryForm(instance=dashboard)
+
     context = {'form': form, 'button_text': 'Update Information'}
     return render(request, 'update_information_form.html', context)
 
@@ -327,7 +374,7 @@ class Gemini(object):
     model = genai.GenerativeModel('gemini-pro')
 
     @staticmethod
-    def get_gemini_response(receipt_data, category_names):
+    def parse_receipt_data(receipt_data, category_names):
         response = Gemini.model.generate_content(f'''
                                         Here is some text from a receipt or invoice. Tell me the date of the transaction, the
                                         total amount of money involved in the transaction, and the category that this transaction
@@ -343,9 +390,31 @@ class Gemini(object):
 
                                         TEXT: {receipt_data}
                                             ''')
-
         return response
 
+    @staticmethod
+    def get_csv_columns(data):
+        response = Gemini.model.generate_content(f'''
+                                                    Here are the first two rows of a csv file, given as a list
+                                                    where each item is a row in the csv file.
+
+                                                    {data}
+
+                                                    The file is meant to be a collection of a person's financial
+                                                    transactions. Based on the data given, infer the column numbers,
+                                                    starting from 0, that tell the date of a transaction, the amount of
+                                                    money involved in a transaction, and the category of a transaction respectively.
+
+                                                IMPORTANT: Output only in JSON format with keys named "date", "amount", and "category". The value
+                                                    for each key should be the 0-indexed position of the data.
+                                                Do NOT label the JSON as a json. The first character of the output should be a bracket denoting
+                                                the beginning of the JSON string.
+
+                                                For any of the three values you cannot find, output the value as the value -1.
+                                                Do NOT have any of the values be None.
+                                                    ''')
+
+        return response
 
 @authenticated_user
 def upload_receipt(request):
@@ -378,7 +447,7 @@ def upload_receipt(request):
 
             # tries the API call at most three times before giving up
             for _ in range(3):
-                response = Gemini.get_gemini_response(texts_as_string, category_names)
+                response = Gemini.parse_receipt_data(texts_as_string, category_names)
                 if response.parts:
                     break
 
