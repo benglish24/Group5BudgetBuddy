@@ -385,8 +385,9 @@ class Gemini(object):
                                         the beginning of the JSON string.
 
                                         For any of the three values you cannot find, output the value as a pair of empty quotes.
-                                        Do NOT have any of the values be None.
-                                        Date must be formatted in the form MM/DD/YYYY. Output only the JSON string and nothing else.
+                                        Do NOT have any of the values be None. Do NOT have any of the values be an empty list.
+                                        Date must be formatted in the form MM/DD/YYYY. You will choose exactly one category as a string if any
+                                        are applicable. Output only the JSON string and nothing else.
 
                                         TEXT: {receipt_data}
                                             ''')
@@ -453,11 +454,18 @@ def upload_receipt(request):
 
             if not response.parts: return redirect('add_transaction')
 
-            dct = json.loads(response.text)
+            print(response.text)
 
-            date_string = "" if 'date' not in dct else dct['date']
-            amount = "" if 'amount' not in dct else dct['amount']
-            category_name = "" if 'category' not in dct else dct['category'].title()
+            dct = json.loads(response.text)
+            print(dct)
+
+            # date_string = "" if 'date' not in dct else dct['date']
+            # amount = "" if 'amount' not in dct else dct['amount']
+            # category_name = "" if 'category' not in dct else dct['category'].title()
+
+            date_string = dct['date']
+            amount = dct['amount']
+            category_name = dct['category'].title()
 
             return redirect(reverse('add_transaction')+ f"?date={date_string}&amount={amount}&category={category_name}")
 
