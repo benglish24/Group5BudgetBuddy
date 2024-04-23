@@ -13,4 +13,4 @@ class UserProfileUpdateForm(forms.ModelForm):
         """Meta class."""
 
         model = models.UserProfile
-        fields = ["first_name", "last_name", "gender", "age", "picture"]
+        fields = ["first_name", "last_name", "gender", "age"]

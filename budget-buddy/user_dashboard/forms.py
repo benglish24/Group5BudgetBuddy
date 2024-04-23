@@ -5,7 +5,7 @@ from django import forms
 class UserDashboardForm(ModelForm):
     class Meta:
         model = UserDashboard
-        fields = ['salary', 'saving_percentage', 'spending']
+        fields = ['pay_amount', 'saving_percentage', 'spending']
 
 
 class TransactionForm(ModelForm):
@@ -53,7 +53,7 @@ class CategoryReplacementForm(forms.Form):
 class SalaryForm(ModelForm):
     class Meta:
         model = UserDashboard
-        fields = ['salary', 'saving_percentage', 'start_date', 'frequency']
+        fields = ['pay_amount', 'saving_percentage', 'start_date', 'frequency']
 
         # makes date input in form an actual date picker
         widgets = {

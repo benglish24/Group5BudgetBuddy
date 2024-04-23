@@ -7,12 +7,8 @@
 {% block content %}
     <style>
         .profile-card {
-            background-color: white;
+            background-color: rgba(71, 71, 71, 0.404);
             border: 1px solid rgba(0, 0, 0, 0.125);
-        }
-        .profile-details {
-            border-top: 1px solid rgba(0, 0, 0, 0.125);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
         }
     </style>
 
@@ -24,27 +20,12 @@
                     <div class="card-header bg-primary text-white">
                         <h5 class="card-title mb-0">Profile Details</h5>
                     </div>
-                    <div class="card-body profile-details">
-                        <div class="text-center mb-4">
-                            {% if user.userprofile.picture %}
-                                <img src="{{ user.userprofile.picture.url }}"
-                                     alt="Profile Picture"
-                                     class="rounded-circle img-thumbnail"
-                                     height="150"
-                                     width="150">
-                            {% else %}
-                                <img src="{% static 'img/user-icon.png' %}"
-                                     alt="Profile Picture"
-                                     class="rounded-circle img-thumbnail"
-                                     height="150"
-                                     width="150">
-                            {% endif %}
-                        </div>
+                    <div class="card-body profile-details" style="color: rgb(0, 0, 0);">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item border-0 border-top">First Name: {{ user.first_name }}</li>
-                            <li class="list-group-item border-0">Last Name: {{ user.last_name }}</li>
-                            <li class="list-group-item border-0">Age: {{ user.userprofile.age }}</li>
-                            <li class="list-group-item border-0 border-bottom">Gender: {{ user.userprofile.get_gender_display }}</li>
+                            <li class="list-group-item border-0 border-top" style="color: white;">First Name: {{ user.first_name }}</li>
+                            <li class="list-group-item border-0" style="color: white;">Last Name: {{ user.last_name }}</li>
+                            <li class="list-group-item border-0" style="color: white;">Age: {{ user.userprofile.age }}</li>
+                            <li class="list-group-item border-0 border-bottom" style="color: white;">Gender: {{ user.userprofile.get_gender_display }}</li>
                         </ul>
                     </div>
                     <div class="card-footer text-muted text-center">

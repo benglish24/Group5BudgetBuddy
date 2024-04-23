@@ -142,6 +142,7 @@ def update_transaction(request, pk):
 
 @authenticated_user
 def delete_transaction(request, pk):
+    dashboard = UserDashboard.objects.get(custom_user=request.user)
     transaction = Transaction.objects.get(id=pk)
 
     if request.user != transaction.user:
@@ -149,6 +150,7 @@ def delete_transaction(request, pk):
 
     if request.method == 'POST':
         transaction.delete()
+        dashboard.save()
         return redirect('/')
 
     context = {"object" : transaction}
@@ -267,32 +269,27 @@ def add_category(request):
 def delete_category(request, category_id):
     category = Category.objects.get(id=category_id)
     transactions_with_category = Transaction.objects.filter(category=category)
+    if request.method == 'POST':
+        form = CategoryReplacementForm(request.POST, current_category=category)
+        if form.is_valid():
+            replacement_category = form.cleaned_data['replacement_category']
 
-    if transactions_with_category.exists():
-        if request.method == 'POST':
-            form = CategoryReplacementForm(request.POST, current_category=category)
-            if form.is_valid():
-                replacement_category = form.cleaned_data['replacement_category']
+            # Replace transactions with the selected replacement category
+            Transaction.objects.filter(category=category).update(category=replacement_category)
 
-                # Replace transactions with the selected replacement category
-                Transaction.objects.filter(category=category).update(category=replacement_category)
+            # Delete the category
+            category.delete()
 
-                # Delete the category
-                category.delete()
-
-                return redirect('user_dash')
-        else:
-            form = CategoryReplacementForm(current_category=category)
-
-        return render(request, 'cannot_delete_category.html', {'category': category, 'form': form, 'transactions': transactions_with_category})
+            return redirect('user_dash')
     else:
-        # No transactions associated with the category, delete it directly
-        category.delete()
-        return redirect('user_dash')
+        form = CategoryReplacementForm(current_category=category)
+
+    return render(request, 'cannot_delete_category.html', {'category': category, 'form': form, 'transactions': transactions_with_category})
 
 
 @authenticated_user
 def delete_transactions(request, category_id):
+    dashboard = UserDashboard.objects.get(custom_user=request.user)
     category = Category.objects.get(id=category_id)
     transactions_with_category = Transaction.objects.filter(category=category)
 
@@ -302,7 +299,7 @@ def delete_transactions(request, category_id):
 
         # Delete the category
         category.delete()
-
+        dashboard.save()
         return redirect('user_dash')
 
     return render(request, 'delete_transactions.html', {'category': category, 'transactions': transactions_with_category})
@@ -315,7 +312,7 @@ def update_information(request):
         form = SalaryForm(request.POST, instance=dashboard)
         if form.is_valid():
             dashboard = form.save(commit=False)
-            dashboard.salary = form.cleaned_data['salary']  # Update salary value
+            dashboard.pay_amount = form.cleaned_data['pay_amount']  # Update pay_amount value
             dashboard.save()
             return redirect('/')
     else:

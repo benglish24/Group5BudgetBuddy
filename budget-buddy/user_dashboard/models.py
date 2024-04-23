@@ -6,7 +6,7 @@ from datetime import date, timedelta
 
 class UserDashboard(models.Model):
     custom_user = models.OneToOneField("users.CustomUser", on_delete=models.CASCADE)
-    salary = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    pay_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     saving_percentage = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     spending = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     start_date = models.DateField(default=date.today)
@@ -20,11 +20,11 @@ class UserDashboard(models.Model):
     frequency = models.CharField(max_length=10, choices=frequency_choices, default='Weekly')  # New field for frequency choice
 
     def calculate_budget(self):
-        # Perform budget calculation based on salary, saving percentage, etc.
-        if self.salary * (self.saving_percentage / 100) == 0:
+        # Perform budget calculation based on pay_amount, saving percentage, etc.
+        if self.pay_amount * (self.saving_percentage / 100) == 0:
             return 0
-        budget = self.salary * (self.saving_percentage / 100)
-        budget = self.salary - budget - self.total_amount
+        budget = self.pay_amount * (self.saving_percentage / 100)
+        budget = self.pay_amount - budget - self.total_amount
         return budget
 
     def total_amount_for_user(self):
