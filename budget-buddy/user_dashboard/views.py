@@ -167,33 +167,54 @@ def upload_transaction(request):
     if request.method == 'POST':
         form = UploadForm(request.POST, request.FILES)
         if form.is_valid():
-            categories = Category.objects.filter(user=request.user)
-            category_list = [c.name for c in categories]
-            transactions = [] if 'file' not in request.FILES else csv.reader(decode_utf8(request.FILES['file']))
-
-            date_idx, amount_idx, category_idx = -1, -1, -1
-
-            first_lines = [next(transactions), next(transactions)]
-            print(first_lines)
-
-            response = Gemini.get_csv_columns(first_lines)
-
-            indices = json.loads(response.text)
-            print(indices)
-
-            date_idx, amount_idx, category_idx = indices['date'], indices['amount'], indices['category']
-
-            # print(transactions)
-            # next(transactions) # skip header
+            try:
 
 
+                categories = Category.objects.filter(user=request.user)
+                category_list = [c.name for c in categories]
+                transactions = [] if 'file' not in request.FILES else csv.reader(decode_utf8(request.FILES['file']))
 
-            for line in transactions:
-                if not line[0]: continue
+                date_idx, amount_idx, category_idx = -1, -1, -1
 
-                date_of = line[date_idx]
-                amount = line[amount_idx]
-                category_name = line[category_idx].title()
+                first_lines = [next(transactions), next(transactions)]
+                print(first_lines)
+
+                response = Gemini.get_csv_columns(first_lines)
+
+                indices = json.loads(response.text)
+                print(indices)
+
+                date_idx, amount_idx, category_idx = indices['date'], indices['amount'], indices['category']
+
+                # print(transactions)
+                # next(transactions) # skip header
+
+
+
+                for line in transactions:
+                    if not line[0]: continue
+
+                    date_of = line[date_idx]
+                    amount = line[amount_idx]
+                    category_name = line[category_idx].title()
+                    category = None
+
+                    if category_name in category_list:
+                        category = categories.get(name=category_name)
+                    else:
+                        category = Category(user=request.user, name=category_name)
+                        category.save()
+                        categories = Category.objects.filter(user=request.user)
+                        category_list.append(category_name)
+
+                    t = Transaction()
+                    t.date_of, t.amount, t.category = date_of, amount, category
+                    t.user = request.user
+                    t.save()
+
+                date_of = first_lines[1][date_idx]
+                amount = first_lines[1][amount_idx]
+                category_name = first_lines[1][category_idx].title()
                 category = None
 
                 if category_name in category_list:
@@ -208,24 +229,9 @@ def upload_transaction(request):
                 t.date_of, t.amount, t.category = date_of, amount, category
                 t.user = request.user
                 t.save()
+            except:
+                return redirect('/')
 
-            date_of = first_lines[1][date_idx]
-            amount = first_lines[1][amount_idx]
-            category_name = first_lines[1][category_idx].title()
-            category = None
-
-            if category_name in category_list:
-                category = categories.get(name=category_name)
-            else:
-                category = Category(user=request.user, name=category_name)
-                category.save()
-                categories = Category.objects.filter(user=request.user)
-                category_list.append(category_name)
-
-            t = Transaction()
-            t.date_of, t.amount, t.category = date_of, amount, category
-            t.user = request.user
-            t.save()
 
         dashboard = UserDashboard.objects.get(custom_user=request.user)
         dashboard.save()
@@ -460,9 +466,23 @@ def upload_receipt(request):
             # amount = "" if 'amount' not in dct else dct['amount']
             # category_name = "" if 'category' not in dct else dct['category'].title()
 
-            date_string = dct['date']
-            amount = dct['amount']
-            category_name = dct['category'].title()
+            try:
+                date_string = dct['date']
+            except:
+                date_string = ""
+
+            try:
+                amount = dct['amount']
+            except:
+                amount = ""
+
+            try:
+                if type(dct['category']) is list:
+                    category_name = dct['category'][0]
+                else:
+                    category_name = dct['category']
+            except:
+                category_name = ""
 
             return redirect(reverse('add_transaction')+ f"?date={date_string}&amount={amount}&category={category_name}")
 
