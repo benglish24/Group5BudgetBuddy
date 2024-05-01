@@ -9,7 +9,7 @@
           color: green !important;
       }
 
-      .transaction-outside-period {S
+      .transaction-outside-period {
           color: white !important;
       }
   </style>
@@ -47,7 +47,7 @@
                         <!-- Wrap each button in a div with d-inline-block class -->
                         <form method="post" action="{% url 'delete_category' category.id %}">
                           {% csrf_token %}
-                          <button type="submit" class="btn btn-warning btn-sm">Edit</button>
+                          <button type="submit" class="btn btn-success btn-sm">Edit</button>
                         </form>
                       </div>
                       <div class="d-inline-block">
@@ -96,11 +96,11 @@
                     <div style="color: aqua; font-size: 14pt;">Total Spent: ${{ dashboard.total_amount|floatformat:2|intcomma }}</div>
                     {% if dashboard.spending < 0 %}
                       <div style="color: rgb(255, 47, 47); font-size: 14pt;">
-                        Spending Amount: ${{ dashboard.spending|floatformat:2|intcomma }}
+                        Remaining Spending: ${{ dashboard.spending|floatformat:2|intcomma }}
                       </div>
                     {% else %}
                       <div style="color: greenyellow; font-size: 14pt;">
-                        Spending Amount: ${{ dashboard.spending|floatformat:2|intcomma }}
+                        Remaining Spending: ${{ dashboard.spending|floatformat:2|intcomma }}
                       </div>
                     {% endif %}
                   </div>
@@ -138,7 +138,7 @@
                       <td class="text-light">{{ t.category }}</td>
                       <td>
                         <a href="{% url 'update_transaction' t.id %}"
-                           class="btn btn-warning btn-sm">Edit</a>
+                           class="btn btn-success btn-sm">Edit</a>
                         <a href="{% url 'delete_transaction' t.id %}"
                            class="btn btn-danger btn-sm">Delete</a>
                       </td>
@@ -173,7 +173,7 @@ var myDoughnutChart = new Chart(ctx, {
     datasets: [
       {
         data: data,
-        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"], // You can add more colors if needed
+        backgroundColor: ["#FF6384", "#2c80cf", "#FFCE56"], // You can add more colors if needed
       },
     ],
   },
